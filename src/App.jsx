@@ -1,15 +1,15 @@
 import { useState, useMemo } from "react";
 
-const TEAL = "#1A8A7D";
-const DARK = "#2D3436";
-const GOLD = "#D4A029";
-const LIGHT_TEAL = "#E8F5F3";
-const LIGHT_GOLD = "#FFF8E7";
-const LIGHT_BLUE = "#EBF5FB";
-const LIGHT_PINK = "#FDEDEC";
-const BG = "#FAFAF8";
+const TABS = ["🌸 Highlights", "🍽️ Free Food", "👶 Kids & Families", "🏘️ Neighborhoods", "📅 May Events", "⭐ Top Actions"];
 
-const TABS = ["🌸 Highlights", "🍽️ Free Food", "👶 Kids & Families", "🏘️ Neighborhoods", "📅 May Events", "⭐ Top 6 Actions"];
+const FILTERS = [
+  { label: "All", key: "all", emoji: "✨" },
+  { label: "Free", key: "free", emoji: "🆓" },
+  { label: "Kids", key: "kids", emoji: "👶" },
+  { label: "Food", key: "food", emoji: "🌽" },
+  { label: "Bilingual", key: "bilingual", emoji: "🇪🇸" },
+  { label: "Sensory", key: "sensory", emoji: "♿" },
+];
 
 const linkStyle = "underline decoration-dotted underline-offset-2 hover:decoration-solid";
 
@@ -42,7 +42,7 @@ function LinkOut({ href, children }) {
   return <a href={href} target="_blank" rel="noopener noreferrer" className={`text-[#c06030] ${linkStyle}`}>{children}</a>;
 }
 
-function HighlightsTab({ searchQuery }) {
+function HighlightsTab({ activeFilter }) {
   return (
     <div>
       <div className="bg-gradient-to-br from-amber-50 to-rose-50 rounded-2xl p-5 mb-6 border border-amber-200 shadow-sm">
@@ -126,7 +126,7 @@ function HighlightsTab({ searchQuery }) {
   );
 }
 
-function FreeFoodTab({ searchQuery }) {
+function FreeFoodTab({ activeFilter }) {
   return (
     <div>
       <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-5 mb-6 border border-orange-200">
@@ -183,7 +183,7 @@ function FreeFoodTab({ searchQuery }) {
         { day: "Saturday", items: [
           { t: "10–11:30am", n: "Bounty & Soul Distribution + Food Connection Truck", l: "Art Space Charter, Swannanoa", nb: "Swannanoa", link: "https://www.bountyandsoul.org/" },
         ]},
-      ].map(day => ({...day, items: day.items.filter(it => (it.n+it.l).toLowerCase().includes(searchQuery))})).filter(day => day.items.length > 0).map(({ day, items }) => (
+      ].map(({ day, items }) => (
         <div key={day} className="mb-5">
           <h3 className="font-black text-sm uppercase tracking-widest text-orange-600 mb-2 border-b border-orange-200 pb-1">{day}</h3>
           {items.map((it, i) => (
@@ -209,7 +209,7 @@ function FreeFoodTab({ searchQuery }) {
   );
 }
 
-function KidsTab({ searchQuery }) {
+function KidsTab({ activeFilter }) {
   return (
     <div>
       <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-5 mb-6 border border-pink-200">
@@ -223,7 +223,7 @@ function KidsTab({ searchQuery }) {
         { n: "Puppet Playtime", w: "Wed 10–11:30am", l: "East AVL Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
         { n: "Hora del Cuento — Bilingual 🇪🇸", w: "Wed 10:30am", l: "Enka-Candler Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
         { n: "Baby Gym (4–18mos)", w: "Thu 11am", l: "Pack Library (Downtown)", link: "https://www.buncombecounty.org/governing/depts/library/" },
-      ].filter(p => (p.n+p.l).toLowerCase().includes(searchQuery)).map((p, i) => (
+      ].map((p, i) => (
         <div key={i} className="flex gap-3 items-start mb-3 text-sm bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
           <span className="text-2xl mt-1">📖</span>
           <div>
@@ -261,7 +261,7 @@ function KidsTab({ searchQuery }) {
   );
 }
 
-function NeighborhoodTab({ searchQuery }) {
+function NeighborhoodTab({ activeFilter }) {
   return (
     <div className="text-center py-10 opacity-70">
       <div className="text-4xl mb-4">📍</div>
@@ -271,7 +271,7 @@ function NeighborhoodTab({ searchQuery }) {
   );
 }
 
-function AprilEventsTab({ searchQuery }) {
+function AprilEventsTab({ activeFilter }) {
   const events = [
     { d: "May 1", items: ["9:00 AM: closed may 1 fridge and pantry in Swannanoa - Swannanoa communities together, 2121 US-70 — FREE", "12:00 PM: Free Food Truck Asheville from Ywam, Aston Street & South Lexington Avenue — FREE", "3:00 PM: May Day Community Feast Trinity UMC Asheville, 587 Haywood Rd — FREE", "3:00 PM: May Day Community Feast 12 Baskets, 610 Haywood Rd — FREE", "3:00 PM: May Day Community Free Feast in Arden, 132 State Rd 3174 — FREE", "4:00 PM: May Day Feast Unitarian Universalist Avl, 1 Edwin Pl — FREE", "4:00 PM: May Day Free Feast at Dr Wesley Grant Senior Center, 285 Livingston St — FREE", "4:00 PM: May Day Feast at Shiloh Friendship Community Center, 99 New Leicester Hwy — FREE", "5:00 PM: May Day Feast MLK Jr Park Avl, 50 Martin Luther King Jr Dr — FREE", "7:00 PM: Manna Market - Fairview, 1 Taylor Rd — FREE", "7:00 PM: Community Engagement Market @ Fairview Public Library 3PM, Fairview Public Library - 1 Taylor Rd.  Fariview NC 28730 — FREE", "9am–4pm: Tax Help by appt, Pack Library (Downtown)", "11–11:45am: Tiny Tots Yoga, West AVL Library — FREE"] },
     { d: "May 2", items: ["11:00 AM: free dental day Zöe dental's 13th annual servants of smiles., 10A Yorkshire St suite 110 — FREE", "5:00 PM: Cat Pantry and Donation Drive, 841 Haywood Rd — FREE", "11am: Golden Years Treasure Hunt (50+), Memorial Stadium — FREE", "6–7:30pm: Kids Fishing Club, Lake Julian — FREE"] },
@@ -298,12 +298,23 @@ function AprilEventsTab({ searchQuery }) {
     { d: "May 31", items: ["4:00 PM: Emote Clothing Swap - Mask required, 444 Haywood Rd — FREE"] },
   ];
 
+  const filterFn = (item) => {
+    if (activeFilter === "all") return true;
+    const low = item.toLowerCase();
+    if (activeFilter === "free") return low.includes("free");
+    if (activeFilter === "food") return low.includes("food") || low.includes("market") || low.includes("produce") || low.includes("manna") || low.includes("feast") || low.includes("pantry");
+    if (activeFilter === "kids") return low.includes("kid") || low.includes("baby") || low.includes("tot") || low.includes("youth") || low.includes("children") || low.includes("fishing club");
+    if (activeFilter === "bilingual") return low.includes("spanish") || low.includes("bilingual") || low.includes("cuento");
+    if (activeFilter === "sensory") return low.includes("sensory") || low.includes("quiet");
+    return true;
+  };
+
   return (
     <div>
       <div className="bg-gradient-to-br from-violet-50 to-fuchsia-50 rounded-2xl p-5 mb-6 border border-violet-200">
         <p className="text-base font-medium text-gray-800">Special one-time and seasonal events for May 2026. Always confirm with venue before attending! 📅</p>
       </div>
-      {events.map(ev => ({...ev, items: ev.items.filter(it => it.toLowerCase().includes(searchQuery))})).filter(ev => ev.items.length > 0).map((ev, i) => (
+      {events.map(ev => ({...ev, items: ev.items.filter(filterFn)})).filter(ev => ev.items.length > 0).map((ev, i) => (
         <div key={i} className="mb-5 bg-white p-4 rounded-xl shadow-sm">
           <h3 className="font-black text-sm bg-violet-100 text-violet-800 rounded-lg px-3 py-1.5 inline-block mb-3 shadow-sm">{ev.d}</h3>
           <div className="space-y-3 pl-1">
@@ -320,7 +331,7 @@ function AprilEventsTab({ searchQuery }) {
   );
 }
 
-function TopActionsTab({ searchQuery }) {
+function TopActionsTab({ activeFilter }) {
   const actions = [
     { n: "1", title: "Get a Buncombe County Library Card", desc: "Unlocks free storytimes, baby gyms, Zoom Passes to attractions, Wi-Fi hotspots (password: readmore), tech help, and hundreds of free programs.", link: "https://www.buncombecounty.org/governing/depts/library/", color: "from-[#5d8a72] to-[#3a5a4a]" },
     { n: "2", title: "Sign Up for Bounty & Soul Produce", desc: "Free fresh produce distributed at multiple locations across Buncombe County every week. No income verification required.", link: "https://www.bountyandsoul.org/", color: "from-[#eab892] to-[#c06030]" },
@@ -354,66 +365,70 @@ function TopActionsTab({ searchQuery }) {
 
 export default function App() {
   const [tab, setTab] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("all");
   const tabs = [HighlightsTab, FreeFoodTab, KidsTab, NeighborhoodTab, AprilEventsTab, TopActionsTab];
   const ActiveTab = tabs[tab];
 
   return (
     <div className="min-h-screen bg-[#faf8f4] text-gray-800 antialiased" style={{ fontFamily: "var(--font-dmsans)" }}>
-      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;0,9..40,900;1,9..40,400&family=Nunito:wght@700;900&display=swap" rel="stylesheet" />
 
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
-        <div className="max-w-md mx-auto px-4 pt-4 pb-3">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200/60 shadow-sm">
+        {/* Logo + Title */}
+        <div className="max-w-md mx-auto px-4 pt-4 pb-2">
           <div className="flex items-center gap-3">
-            <svg width="28" height="28" viewBox="0 0 100 100" className="text-[#5d8a72]" stroke="currentColor" fill="none" strokeWidth="3">
-              <circle cx="50" cy="50" r="16" />
-              <circle cx="50" cy="34" r="16" />
-              <circle cx="63.8" cy="42" r="16" />
-              <circle cx="63.8" cy="58" r="16" />
-              <circle cx="50" cy="66" r="16" />
-              <circle cx="36.2" cy="58" r="16" />
-              <circle cx="36.2" cy="42" r="16" />
-            </svg>
-            <h1 className="text-2xl font-medium tracking-tight text-[#1a2520]" style={{ fontFamily: "var(--font-fraunces)" }}>
-              May Family Happenings
-            </h1>
+            <img src="/logo.png" alt="ConnectEd Circles" className="w-10 h-10 object-contain" />
+            <div>
+              <h1 className="text-xl font-medium tracking-tight text-[#1a2520] leading-tight" style={{ fontFamily: "var(--font-fraunces)" }}>
+                May Family Happenings
+              </h1>
+              <p className="text-[11px] font-semibold text-[#5d8a72] tracking-wide uppercase">by ConnectEd Circles · May 2026</p>
+            </div>
           </div>
-          <p className="text-sm font-semibold text-gray-500 mt-0.5">May 2026 · Free & Low-Cost Guide</p>
         </div>
-        <div className="max-w-md mx-auto px-3 pb-3 flex gap-2 overflow-x-auto hide-scrollbar">
+
+        {/* Tab Navigation */}
+        <div className="max-w-md mx-auto px-3 pb-2 flex gap-1.5 overflow-x-auto hide-scrollbar">
           {TABS.map((t, i) => (
             <button
               key={i}
-              onClick={() => setTab(i)}
-              className={`whitespace-nowrap px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+              onClick={() => { setTab(i); setActiveFilter("all"); }}
+              className={`whitespace-nowrap px-3.5 py-2 rounded-full text-[13px] font-bold transition-all ${
                 tab === i
-                  ? "bg-[#3a5a4a] text-[#f3f9f5] shadow-md transform scale-105"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  ? "bg-[#3a5a4a] text-white shadow-md"
+                  : "bg-[#f3f9f5] text-[#3a5a4a] hover:bg-[#d4e8dc]"
               }`}
             >
               {t}
             </button>
           ))}
         </div>
+
+        {/* Filter Chips */}
+        <div className="max-w-md mx-auto px-3 pb-3 flex gap-1.5 overflow-x-auto hide-scrollbar">
+          {FILTERS.map((f) => (
+            <button
+              key={f.key}
+              onClick={() => setActiveFilter(activeFilter === f.key ? "all" : f.key)}
+              className={`whitespace-nowrap px-3 py-1.5 rounded-full text-[12px] font-bold transition-all border ${
+                activeFilter === f.key
+                  ? "bg-[#c06030] text-white border-[#c06030] shadow-sm"
+                  : "bg-white text-[#4a5e57] border-[#d4e8dc] hover:bg-[#fbeede] hover:border-[#eab892]"
+              }`}
+            >
+              {f.emoji} {f.label}
+            </button>
+          ))}
+        </div>
       </header>
 
-      <main className="max-w-md mx-auto px-4 py-6">
-        <div className="mb-6 relative">
-          <span className="absolute left-4 top-3 text-gray-400">🔍</span>
-          <input 
-            type="text" 
-            placeholder="Filter events, food, resources..." 
-            className="w-full bg-white border-2 border-gray-100 rounded-full py-3 pl-12 pr-4 text-sm font-medium focus:outline-none focus:border-[#5d8a72] shadow-sm transition-colors"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        <ActiveTab searchQuery={searchQuery.toLowerCase()} />
+      <main className="max-w-md mx-auto px-4 py-5">
+        <ActiveTab searchQuery="" activeFilter={activeFilter} />
       </main>
 
       <footer className="max-w-md mx-auto px-4 py-10 text-center text-xs text-gray-400 mt-8">
-        <div className="w-16 h-1 bg-gray-200 rounded-full mx-auto mb-6"></div>
-        <p>App by ConnectEd Circles</p>
+        <img src="/logo.png" alt="ConnectEd Circles" className="w-8 h-8 mx-auto mb-3 opacity-40" />
+        <p className="font-bold text-[#3a5a4a]">ConnectEd Circles</p>
+        <p className="mt-1">App by ChildFirst / RHA</p>
         <p className="mt-2 font-medium text-[#5d8a72]">Made with care for WNC families 💛</p>
       </footer>
     </div>
