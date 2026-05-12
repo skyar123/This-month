@@ -68,6 +68,7 @@ function HighlightsTab({ activeFilter }) {
         <p><strong>Mondays · 6–8am & 11am–1pm · $5</strong></p>
         <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
         <p className="mt-1 text-xs">BCS Aquatic Center · 18 Ensley Stadium Loop</p>
+        <p className="mt-1"><LinkOut href="https://www.buncombecounty.org/governing/depts/recreation-services/">Buncombe Rec ↗</LinkOut></p>
       </Card>
       
       <Card title="Pickleball at Shiloh" accent="border-l-green-400" icon="🥒">
@@ -87,6 +88,7 @@ function HighlightsTab({ activeFilter }) {
         <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
         <Badge color="bg-yellow-100 text-yellow-800">👶 Kids</Badge>
         <p className="mt-1 text-xs">1880 Dellwood Rd · <em>Waynesville</em></p>
+        <p className="mt-1"><LinkOut href="https://www.caffeineandchaos.com/">caffeineandchaos.com ↗</LinkOut></p>
       </Card>
 
       <SectionHeader emoji="✨">This Week's Don't-Miss</SectionHeader>
@@ -239,15 +241,15 @@ function KidsTab({ activeFilter }) {
       
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
         <ul className="text-sm space-y-3">
-          <li><strong>BEAR Closets (Free Clothes, Toys, Baby Gear):</strong><br/>
+          <li><strong><LinkOut href="https://www.bfrwnc.org/bear-closets">BEAR Closets</LinkOut> (Free Clothes, Toys, Baby Gear):</strong><br/>
               ▸ <em>Abernethy UMC (Asheville):</em> 1st/3rd Wed 10am-2pm<br/>
               ▸ <em>St. Pauls UMC (Asheville):</em> 2nd/4th Wed 4pm-6pm<br/>
               ▸ <em>Snow Hill UMC (Candler):</em> Tue 1pm-5pm<br/>
               ▸ <em>Loving Hearts (Marion):</em> Wed 12pm-3pm
           </li>
-          <li className="pt-2 border-t border-gray-50"><strong>Register of Deeds (Downtown Asheville):</strong> Free Diapers & Formula (Mon-Fri 8am-5pm)</li>
+          <li className="pt-2 border-t border-gray-50"><strong><LinkOut href="https://www.buncombecounty.org/governing/depts/register-of-deeds/">Register of Deeds</LinkOut> (Downtown Asheville):</strong> Free Diapers & Formula (Mon-Fri 8am-5pm)</li>
           <li className="pt-2 border-t border-gray-50"><strong>Lilac Health Milk Depot (Black Mountain):</strong> Breast Milk/Lactation support at Temple Chiropractic</li>
-          <li className="pt-2 border-t border-gray-50"><strong>Sand Hill Library (Candler):</strong> 24/7 Period Products Pantry located outside</li>
+          <li className="pt-2 border-t border-gray-50"><strong><LinkOut href="https://www.buncombecounty.org/governing/depts/library/">Sand Hill Library</LinkOut> (Candler):</strong> 24/7 Period Products Pantry located outside</li>
         </ul>
       </div>
 
@@ -262,11 +264,74 @@ function KidsTab({ activeFilter }) {
 }
 
 function NeighborhoodTab({ activeFilter }) {
+  const hoods = [
+    { name: "Downtown Asheville", emoji: "🏙️", items: [
+      { n: "Welcome Table (hot meals)", d: "Wed 10am–1pm", l: "Haywood St. Congregation", link: "https://www.haywoodstreet.org/" },
+      { n: "YWAM Free Lunch Truck", d: "Fri 12pm", l: "Corner of Aston & Lexington", link: "https://ywamasheville.org" },
+      { n: "BeLoved Pantry", d: "24/7", l: "15 W Walnut St & N Lexington Ave", link: "https://www.belovedasheville.com/" },
+      { n: "Pack Library Programs", d: "Mon–Sat", l: "67 Haywood St", link: "https://www.buncombecounty.org/governing/depts/library/" },
+      { n: "Register of Deeds — Free Diapers & Formula", d: "Mon-Fri 8am-5pm", l: "205 College St", link: "https://www.buncombecounty.org/governing/depts/register-of-deeds/" },
+    ]},
+    { name: "West Asheville", emoji: "🌿", items: [
+      { n: "12 Baskets Café (free meals)", d: "Mon–Fri 3–5pm", l: "610 Haywood Rd", link: "https://www.12basketscafe.org/" },
+      { n: "Feed The People Dinner", d: "Tue 5:30pm", l: "Oakwood & Haywood", link: "https://www.facebook.com/FeedThePeopleAVL/" },
+      { n: "BeLoved Pantry", d: "24/7", l: "1050 Haywood Rd", link: "https://www.belovedasheville.com/" },
+      { n: "Spring Clothing Swap", d: "May 18", l: "27 Balm Grove Ave", link: "" },
+    ]},
+    { name: "East Asheville / Swannanoa", emoji: "🏔️", items: [
+      { n: "Bounty & Soul Produce Truck", d: "Mon 12:30–2pm", l: "Beacon Village, 120 Alexander Pl", link: "https://www.bountyandsoul.org/" },
+      { n: "Bounty & Soul + Food Connection", d: "Sat 10–11:30am", l: "Art Space Charter", link: "https://www.bountyandsoul.org/" },
+      { n: "BeLoved Pantry", d: "24/7", l: "2299 US 70 (Ingles) & 1329 Tunnel Rd", link: "https://www.belovedasheville.com/" },
+    ]},
+    { name: "South Asheville / Arden", emoji: "🛍️", items: [
+      { n: "BeLoved Pantry", d: "24/7", l: "390 & 300 Airport Rd", link: "https://www.belovedasheville.com/" },
+      { n: "Truck City AVL (Quiet Hour!)", d: "May 18 · 1–4pm", l: "Tanger Outlets", link: "" },
+    ]},
+    { name: "Candler / Enka", emoji: "🌄", items: [
+      { n: "Food Connection Truck", d: "Thu 3–5pm", l: "Francis Asbury Methodist", link: "https://www.foodconnection.org/" },
+      { n: "BEAR Closet (baby gear)", d: "Tue 1–5pm", l: "Snow Hill UMC", link: "" },
+      { n: "Sand Hill Library Period Pantry", d: "24/7", l: "Sand Hill Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
+      { n: "Hora del Cuento (Bilingual Storytime)", d: "Wed 10:30am", l: "Enka-Candler Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
+    ]},
+    { name: "Weaverville / Woodfin", emoji: "🌲", items: [
+      { n: "Food Connection Truck", d: "Fri 11am–1pm", l: "Victory Fellowship", link: "https://www.foodconnection.org/" },
+      { n: "BeLoved Pantry", d: "24/7", l: "65 Weaver Blvd (Hardees)", link: "https://www.belovedasheville.com/" },
+    ]},
+    { name: "Fairview / Leicester", emoji: "🌻", items: [
+      { n: "Food Connection Truck", d: "Tue 3–5pm", l: "Food Lion, Fairview", link: "https://www.foodconnection.org/" },
+      { n: "Food Connection Truck", d: "Wed 5–6pm", l: "Bell UMC, Leicester", link: "https://www.foodconnection.org/" },
+      { n: "Manna Market", d: "May 1", l: "Fairview Public Library", link: "https://www.mannamarketwnc.org/" },
+    ]},
+    { name: "Black Mountain", emoji: "⛰️", items: [
+      { n: "Bounty & Soul Distribution", d: "Thu 3:30–5:30pm", l: "BiLo", link: "https://www.bountyandsoul.org/" },
+      { n: "Lilac Health Milk Depot", d: "By appt", l: "Temple Chiropractic", link: "" },
+    ]},
+    { name: "Bryson City (Swain Co.)", emoji: "🏡", items: [
+      { n: "Restoration House Pantry", d: "Mon/Tue/Thu/Fri 10am–3pm, Wed 1–6pm", l: "81 Academy St", link: "" },
+      { n: "24/7 Blessing Box + Vending Machine", d: "24/7", l: "81 Academy St (outside)", link: "" },
+    ]},
+  ];
+
   return (
-    <div className="text-center py-10 opacity-70">
-      <div className="text-4xl mb-4">📍</div>
-      <h3 className="font-bold text-xl mb-2">Neighborhood Directory</h3>
-      <p>Use the Free Food and Highlights tabs to explore resources by area.</p>
+    <div>
+      <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-5 mb-6 border border-emerald-200">
+        <p className="text-base font-medium text-gray-800">Resources grouped by neighborhood so you can find what's near you. 📍</p>
+      </div>
+      {hoods.map((h, i) => (
+        <div key={i} className="mb-6">
+          <h3 className="font-black text-sm uppercase tracking-widest text-[#3a5a4a] mb-3 border-b border-[#d4e8dc] pb-1 flex items-center gap-2">
+            <span className="text-lg">{h.emoji}</span> {h.name}
+          </h3>
+          {h.items.map((it, j) => (
+            <div key={j} className="flex gap-3 mb-2 text-sm bg-white p-3 rounded-xl shadow-sm border border-gray-50 hover:shadow-md transition-shadow">
+              <div className="flex-1">
+                <span className="font-bold text-gray-800">{it.link ? <a href={it.link} target="_blank" rel="noopener noreferrer" className="text-[#c06030] underline decoration-dotted underline-offset-2 hover:decoration-solid">{it.n}</a> : it.n}</span>
+                <span className="text-gray-500 block text-xs mt-0.5">🕒 {it.d} · 📍 {it.l}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
@@ -376,7 +441,7 @@ export default function App() {
         {/* Logo + Title */}
         <div className="max-w-md mx-auto px-4 pt-4 pb-2">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="ConnectEd Circles" className="w-10 h-10 object-contain" />
+            <img src="/logo.svg" alt="ConnectEd Circles" className="w-10 h-10 object-contain" />
             <div>
               <h1 className="text-xl font-medium tracking-tight text-[#1a2520] leading-tight" style={{ fontFamily: "var(--font-fraunces)" }}>
                 May Family Happenings
@@ -426,7 +491,7 @@ export default function App() {
       </main>
 
       <footer className="max-w-md mx-auto px-4 py-10 text-center text-xs text-gray-400 mt-8">
-        <img src="/logo.png" alt="ConnectEd Circles" className="w-8 h-8 mx-auto mb-3 opacity-40" />
+        <img src="/logo.svg" alt="ConnectEd Circles" className="w-8 h-8 mx-auto mb-3 opacity-40" />
         <p className="font-bold text-[#3a5a4a]">ConnectEd Circles</p>
         <p className="mt-1">App by ChildFirst / RHA</p>
         <p className="mt-2 font-medium text-[#5d8a72]">Made with care for WNC families 💛</p>
