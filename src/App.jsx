@@ -42,7 +42,7 @@ function LinkOut({ href, children }) {
   return <a href={href} target="_blank" rel="noopener noreferrer" className={`text-[#c06030] ${linkStyle}`}>{children}</a>;
 }
 
-function HighlightsTab() {
+function HighlightsTab({ searchQuery }) {
   return (
     <div>
       <div className="bg-gradient-to-br from-amber-50 to-rose-50 rounded-2xl p-5 mb-6 border border-amber-200 shadow-sm">
@@ -126,7 +126,7 @@ function HighlightsTab() {
   );
 }
 
-function FreeFoodTab() {
+function FreeFoodTab({ searchQuery }) {
   return (
     <div>
       <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-5 mb-6 border border-orange-200">
@@ -183,7 +183,7 @@ function FreeFoodTab() {
         { day: "Saturday", items: [
           { t: "10–11:30am", n: "Bounty & Soul Distribution + Food Connection Truck", l: "Art Space Charter, Swannanoa", nb: "Swannanoa", link: "https://www.bountyandsoul.org/" },
         ]},
-      ].map(({ day, items }) => (
+      ].map(day => ({...day, items: day.items.filter(it => (it.n+it.l).toLowerCase().includes(searchQuery))})).filter(day => day.items.length > 0).map(({ day, items }) => (
         <div key={day} className="mb-5">
           <h3 className="font-black text-sm uppercase tracking-widest text-orange-600 mb-2 border-b border-orange-200 pb-1">{day}</h3>
           {items.map((it, i) => (
@@ -209,7 +209,7 @@ function FreeFoodTab() {
   );
 }
 
-function KidsTab() {
+function KidsTab({ searchQuery }) {
   return (
     <div>
       <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-5 mb-6 border border-pink-200">
@@ -223,7 +223,7 @@ function KidsTab() {
         { n: "Puppet Playtime", w: "Wed 10–11:30am", l: "East AVL Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
         { n: "Hora del Cuento — Bilingual 🇪🇸", w: "Wed 10:30am", l: "Enka-Candler Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
         { n: "Baby Gym (4–18mos)", w: "Thu 11am", l: "Pack Library (Downtown)", link: "https://www.buncombecounty.org/governing/depts/library/" },
-      ].map((p, i) => (
+      ].filter(p => (p.n+p.l).toLowerCase().includes(searchQuery)).map((p, i) => (
         <div key={i} className="flex gap-3 items-start mb-3 text-sm bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
           <span className="text-2xl mt-1">📖</span>
           <div>
@@ -261,7 +261,7 @@ function KidsTab() {
   );
 }
 
-function NeighborhoodTab() {
+function NeighborhoodTab({ searchQuery }) {
   return (
     <div className="text-center py-10 opacity-70">
       <div className="text-4xl mb-4">📍</div>
@@ -271,7 +271,7 @@ function NeighborhoodTab() {
   );
 }
 
-function AprilEventsTab() {
+function AprilEventsTab({ searchQuery }) {
   const events = [
     { d: "May 1", items: ["9:00 AM: closed may 1 fridge and pantry in Swannanoa - Swannanoa communities together, 2121 US-70 — FREE", "12:00 PM: Free Food Truck Asheville from Ywam, Aston Street & South Lexington Avenue — FREE", "3:00 PM: May Day Community Feast Trinity UMC Asheville, 587 Haywood Rd — FREE", "3:00 PM: May Day Community Feast 12 Baskets, 610 Haywood Rd — FREE", "3:00 PM: May Day Community Free Feast in Arden, 132 State Rd 3174 — FREE", "4:00 PM: May Day Feast Unitarian Universalist Avl, 1 Edwin Pl — FREE", "4:00 PM: May Day Free Feast at Dr Wesley Grant Senior Center, 285 Livingston St — FREE", "4:00 PM: May Day Feast at Shiloh Friendship Community Center, 99 New Leicester Hwy — FREE", "5:00 PM: May Day Feast MLK Jr Park Avl, 50 Martin Luther King Jr Dr — FREE", "7:00 PM: Manna Market - Fairview, 1 Taylor Rd — FREE", "7:00 PM: Community Engagement Market @ Fairview Public Library 3PM, Fairview Public Library - 1 Taylor Rd.  Fariview NC 28730 — FREE", "9am–4pm: Tax Help by appt, Pack Library (Downtown)", "11–11:45am: Tiny Tots Yoga, West AVL Library — FREE"] },
     { d: "May 2", items: ["11:00 AM: free dental day Zöe dental's 13th annual servants of smiles., 10A Yorkshire St suite 110 — FREE", "5:00 PM: Cat Pantry and Donation Drive, 841 Haywood Rd — FREE", "11am: Golden Years Treasure Hunt (50+), Memorial Stadium — FREE", "6–7:30pm: Kids Fishing Club, Lake Julian — FREE"] },
@@ -303,7 +303,7 @@ function AprilEventsTab() {
       <div className="bg-gradient-to-br from-violet-50 to-fuchsia-50 rounded-2xl p-5 mb-6 border border-violet-200">
         <p className="text-base font-medium text-gray-800">Special one-time and seasonal events for May 2026. Always confirm with venue before attending! 📅</p>
       </div>
-      {events.map((ev, i) => (
+      {events.map(ev => ({...ev, items: ev.items.filter(it => it.toLowerCase().includes(searchQuery))})).filter(ev => ev.items.length > 0).map((ev, i) => (
         <div key={i} className="mb-5 bg-white p-4 rounded-xl shadow-sm">
           <h3 className="font-black text-sm bg-violet-100 text-violet-800 rounded-lg px-3 py-1.5 inline-block mb-3 shadow-sm">{ev.d}</h3>
           <div className="space-y-3 pl-1">
@@ -320,7 +320,7 @@ function AprilEventsTab() {
   );
 }
 
-function TopActionsTab() {
+function TopActionsTab({ searchQuery }) {
   const actions = [
     { n: "1", title: "Get a Buncombe County Library Card", desc: "Unlocks free storytimes, baby gyms, Zoom Passes to attractions, Wi-Fi hotspots (password: readmore), tech help, and hundreds of free programs.", link: "https://www.buncombecounty.org/governing/depts/library/", color: "from-[#5d8a72] to-[#3a5a4a]" },
     { n: "2", title: "Sign Up for Bounty & Soul Produce", desc: "Free fresh produce distributed at multiple locations across Buncombe County every week. No income verification required.", link: "https://www.bountyandsoul.org/", color: "from-[#eab892] to-[#c06030]" },
@@ -354,6 +354,7 @@ function TopActionsTab() {
 
 export default function App() {
   const [tab, setTab] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const tabs = [HighlightsTab, FreeFoodTab, KidsTab, NeighborhoodTab, AprilEventsTab, TopActionsTab];
   const ActiveTab = tabs[tab];
 
@@ -364,7 +365,7 @@ export default function App() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
         <div className="max-w-md mx-auto px-4 pt-4 pb-3">
           <div className="flex items-center gap-3">
-            <svg width="28" height="28" viewBox="0 0 100 100" className="text-[#5d8a72]" stroke="currentColor" fill="none" strokeWidth="2.5">
+            <svg width="28" height="28" viewBox="0 0 100 100" className="text-[#5d8a72]" stroke="currentColor" fill="none" strokeWidth="3">
               <circle cx="50" cy="50" r="16" />
               <circle cx="50" cy="34" r="16" />
               <circle cx="63.8" cy="42" r="16" />
@@ -374,7 +375,7 @@ export default function App() {
               <circle cx="36.2" cy="42" r="16" />
             </svg>
             <h1 className="text-2xl font-medium tracking-tight text-[#1a2520]" style={{ fontFamily: "var(--font-fraunces)" }}>
-              ConnectEd Circles
+              May Family Happenings
             </h1>
           </div>
           <p className="text-sm font-semibold text-gray-500 mt-0.5">May 2026 · Free & Low-Cost Guide</p>
@@ -397,7 +398,17 @@ export default function App() {
       </header>
 
       <main className="max-w-md mx-auto px-4 py-6">
-        <ActiveTab />
+        <div className="mb-6 relative">
+          <span className="absolute left-4 top-3 text-gray-400">🔍</span>
+          <input 
+            type="text" 
+            placeholder="Filter events, food, resources..." 
+            className="w-full bg-white border-2 border-gray-100 rounded-full py-3 pl-12 pr-4 text-sm font-medium focus:outline-none focus:border-[#5d8a72] shadow-sm transition-colors"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <ActiveTab searchQuery={searchQuery.toLowerCase()} />
       </main>
 
       <footer className="max-w-md mx-auto px-4 py-10 text-center text-xs text-gray-400 mt-8">
