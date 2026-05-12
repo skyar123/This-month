@@ -61,6 +61,34 @@ function HighlightsTab() {
         </div>
       </div>
 
+      
+      <SectionHeader emoji="🏓">Weekly Recreation & Play</SectionHeader>
+      
+      <Card title="Aquatics Center Open Swim" accent="border-l-blue-400" icon="🏊">
+        <p><strong>Mondays · 6–8am & 11am–1pm · $5</strong></p>
+        <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
+        <p className="mt-1 text-xs">BCS Aquatic Center · 18 Ensley Stadium Loop</p>
+      </Card>
+      
+      <Card title="Pickleball at Shiloh" accent="border-l-green-400" icon="🥒">
+        <p><strong>Mondays · 9am–1pm · $5/1 pickle, $20/5 pickles</strong></p>
+        <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
+        <p className="mt-1 text-xs">Linwood Crump Shiloh Community Center</p>
+      </Card>
+
+      <Card title="Social Seniors" accent="border-l-purple-400" icon="☕">
+        <p><strong>Mondays · 9am–5pm · FREE w/registration</strong></p>
+        <Badge color="bg-green-100 text-green-800">🆓 Free</Badge>
+        <p className="mt-1 text-xs">Grove Street Community Center</p>
+      </Card>
+
+      <Card title="Indoor Playground at Caffeine & Chaos" accent="border-l-amber-400" icon="🏰">
+        <p><strong>Mondays · 9am–8pm · $8/ages 0-4, $12/ages 5-12</strong></p>
+        <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
+        <Badge color="bg-yellow-100 text-yellow-800">👶 Kids</Badge>
+        <p className="mt-1 text-xs">1880 Dellwood Rd · <em>Waynesville</em></p>
+      </Card>
+
       <SectionHeader emoji="✨">This Week's Don't-Miss</SectionHeader>
 
       <Card title="YWAM Asheville Free Lunch Food Truck" accent="border-l-orange-400" icon="🚚">
@@ -119,6 +147,16 @@ function FreeFoodTab() {
           <li>📍 <strong>Southside Fridge (BIPOC-led):</strong> 133 Livingston St</li>
         </ul>
       </div>
+
+      
+      <SectionHeader emoji="🏠">Regional Pantries</SectionHeader>
+      <Card title="Restoration House Blessing Box & Pantry" accent="border-l-indigo-400" icon="📦">
+        <p><strong>Pantry: Mon/Tue/Thu/Fri 10am–3pm, Wed 1pm–6pm</strong></p>
+        <p>24/7 Blessing Box outside. 24/7 Public Health Vending Machine with meal kits, hygiene, recovery resources.</p>
+        <Badge color="bg-green-100 text-green-800">🆓 Free</Badge>
+        <Badge color="bg-orange-100 text-orange-800">🌽 Pantry</Badge>
+        <p className="mt-2 text-xs">81 Academy Street · <em>Bryson City (Swain County)</em></p>
+      </Card>
 
       <SectionHeader emoji="🥗">Weekly Free Food & Produce</SectionHeader>
 
@@ -196,6 +234,23 @@ function KidsTab() {
         </div>
       ))}
       
+      
+      <SectionHeader emoji="🍼">Baby Gear & Hygiene Resources</SectionHeader>
+      
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+        <ul className="text-sm space-y-3">
+          <li><strong>BEAR Closets (Free Clothes, Toys, Baby Gear):</strong><br/>
+              ▸ <em>Abernethy UMC (Asheville):</em> 1st/3rd Wed 10am-2pm<br/>
+              ▸ <em>St. Pauls UMC (Asheville):</em> 2nd/4th Wed 4pm-6pm<br/>
+              ▸ <em>Snow Hill UMC (Candler):</em> Tue 1pm-5pm<br/>
+              ▸ <em>Loving Hearts (Marion):</em> Wed 12pm-3pm
+          </li>
+          <li className="pt-2 border-t border-gray-50"><strong>Register of Deeds (Downtown Asheville):</strong> Free Diapers & Formula (Mon-Fri 8am-5pm)</li>
+          <li className="pt-2 border-t border-gray-50"><strong>Lilac Health Milk Depot (Black Mountain):</strong> Breast Milk/Lactation support at Temple Chiropractic</li>
+          <li className="pt-2 border-t border-gray-50"><strong>Sand Hill Library (Candler):</strong> 24/7 Period Products Pantry located outside</li>
+        </ul>
+      </div>
+
       <SectionHeader emoji="🐾">Free Pet Pantries</SectionHeader>
       <Card title="Don't let your furry friends go hungry" accent="border-l-rose-500" icon="🐶">
         <p>Free pet food is available at ABCCM (24 Cumberland Ave), 12 Baskets (610 Haywood Rd), and Haywood Street Congregation.</p>
