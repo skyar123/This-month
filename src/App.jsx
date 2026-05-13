@@ -1,6 +1,24 @@
 import { useState } from "react";
 
-const TABS = ["🌸 Highlights", "🍽️ Free Food", "👶 Kids & Families", "🏘️ Neighborhoods", "📅 May Events", "⭐ Top Actions"];
+const TABS = ["📅 May Events", "🍽️ Food & Basics", "👶 Kids & Families", "🏘️ Neighborhoods"];
+
+const WEEKLY_FOOD = [
+  { day: "Monday", items: [ { t: "12:30–2pm", n: "Bounty & Soul Farmers Market Truck", l: "Beacon Village, Swannanoa", link: "https://www.bountyandsoul.org/" } ] },
+  { day: "Tuesday", items: [ { t: "3–5pm", n: "Food Connection Truck", l: "Food Lion, Fairview", link: "https://www.foodconnection.org/" }, { t: "3:30–5pm", n: "Bounty & Soul Produce", l: "UNETE, 871 Riverside Dr", link: "https://www.bountyandsoul.org/" } ] },
+  { day: "Wednesday", items: [ { t: "10am–1pm", n: "Welcome Table", l: "Haywood St. Congregation", link: "https://www.haywoodstreet.org/" }, { t: "5–6pm", n: "Food Connection", l: "Bell UMC, Leicester", link: "https://www.foodconnection.org/" } ] },
+  { day: "Thursday", items: [ { t: "3–5pm", n: "Food Connection Truck", l: "Francis Asbury Methodist", link: "https://www.foodconnection.org/" }, { t: "3:30–5:30pm", n: "Bounty & Soul", l: "BiLo, Black Mountain", link: "https://www.bountyandsoul.org/" } ] },
+  { day: "Friday", items: [ { t: "11am–1pm", n: "Food Connection Truck", l: "Victory Fellowship", link: "https://www.foodconnection.org/" }, { t: "1:30–3pm", n: "Bounty & Soul Produce", l: "Southside Community Ctr", link: "https://www.bountyandsoul.org/" } ] },
+  { day: "Saturday", items: [ { t: "10–11:30am", n: "Bounty & Soul + Food Connection", l: "Art Space Charter", link: "https://www.bountyandsoul.org/" } ] },
+];
+
+const WEEKLY_LIBRARY = [
+  { day: "Mon", fullDay: "Monday", items: [ { n: "Baby Story Time", t: "10:30am", l: "Pack Memorial Library" }, { n: "Baby Play Time", t: "11am", l: "Pack Memorial Library" } ] },
+  { day: "Tue", fullDay: "Tuesday", items: [ { n: "Toddler Story Time", t: "9:30am", l: "Oakley/South Asheville" }, { n: "Tiny Tots Yoga 🧘", t: "10am", l: "North Asheville" }, { n: "Baby Story Time", t: "10:30am", l: "Swannanoa" }, { n: "Toddler Story Time", t: "10:30am", l: "Pack Memorial" }, { n: "Preschool Story Time", t: "10:30am", l: "Leicester" }, { n: "Preschool Story Time 🇪🇸", t: "3:30pm", l: "Enka-Candler" } ] },
+  { day: "Wed", fullDay: "Wednesday", items: [ { n: "Puppet Playtime 🇪🇸", t: "9am", l: "East Asheville" }, { n: "Baby Play Time", t: "10:30am", l: "Fairview" }, { n: "Baby Play Time", t: "10:30am", l: "North Asheville" }, { n: "Preschool Storytime", t: "10:30am", l: "South Buncombe/Skyland" }, { n: "Toddler Storytime", t: "10:30am", l: "East Asheville" }, { n: "Hora del Cuento 🇪🇸", t: "10:30am", l: "Enka-Candler" }, { n: "Family Story Time", t: "10:30am", l: "Black Mountain" }, { n: "Preschool Story Time", t: "10:30am", l: "Weaverville" }, { n: "Tiny Tots Yoga 🧘", t: "11am", l: "Swannanoa" }, { n: "Baby Playtime", t: "11am", l: "Leicester" } ] },
+  { day: "Thu", fullDay: "Thursday", items: [ { n: "Baby Story Time", t: "9:30am", l: "Oakley/South Asheville" }, { n: "Family Storytime", t: "10:30am", l: "Swannanoa" }, { n: "Toddler Story Time", t: "10:30am", l: "Leicester" }, { n: "Baby Story Time", t: "10:30am", l: "Black Mountain" }, { n: "Preschool Story Time", t: "10:30am", l: "Fairview" }, { n: "Baby Story Time", t: "3:30pm", l: "West Asheville" } ] },
+  { day: "Fri", fullDay: "Friday", items: [ { n: "Toddler Story Time", t: "9:30am", l: "Fairview" }, { n: "Baby Play Time", t: "10:30am", l: "Enka-Candler" }, { n: "Family Storytime", t: "10:30am", l: "South Buncombe/Skyland" }, { n: "Toddler Story Time", t: "10:30am", l: "North Asheville" }, { n: "Expectant & New Parents", t: "3pm", l: "Weaverville" } ] },
+  { day: "Sat", fullDay: "Saturday", items: [ { n: "Family Storytime", t: "9:30am", l: "East Asheville" }, { n: "LEGO Club", t: "10am", l: "Oakley/South Asheville" }, { n: "Family Story Time", t: "10:30am", l: "West Asheville" }, { n: "Hora del cuento 🇪🇸", t: "10:30am", l: "North Asheville" } ] },
+];
 
 const FILTERS = [
   { label: "All", key: "all", emoji: "✨" },
@@ -46,82 +64,52 @@ function LinkOut({ href, children }) {
   );
 }
 
-function getEventLink(text) {
+function getEventMeta(text) {
   const low = text.toLowerCase();
-  if (low.includes("manna market")) return "https://www.mannafoodbank.org/wnc-mobile-market-calendar/";
-  if (low.includes("ymca mobile market") || (low.includes("ymca") && low.includes("market"))) return "https://www.ymcawnc.org/programs/community/food-programs";
-  if (low.includes("community engagement market")) return "https://www.mannafoodbank.org/wnc-mobile-market-calendar/";
-  if (low.includes("ywam") || low.includes("free food truck asheville")) return "https://ywamasheville.org";
-  if (low.includes("12 baskets")) return "https://www.ashevillepovertyinitiative.org/";
-  if (low.includes("bounty & soul") || low.includes("bounty and soul")) return "https://www.bountyandsoul.org/";
-  if (low.includes("feed the people")) return "https://www.facebook.com/FeedThePeopleAVL/";
-  if (low.includes("food connection")) return "https://www.foodconnection.org/";
-  if (low.includes("welcome table")) return "https://www.haywoodstreet.org/";
-  if (low.includes("servants of smiles") || low.includes("zöe dental") || low.includes("zoë dental")) return "https://www.zoedental.com/";
-  if (low.includes("beloved") || low.includes("be loved")) return "https://www.belovedasheville.com/";
-  return null;
-}
+  let emoji = "✨";
+  let link = null;
 
-function HighlightsTab() {
-  return (
-    <div>
-      <div className="bg-gradient-to-br from-amber-50 to-rose-50 rounded-2xl p-5 mb-6 border border-amber-200 shadow-sm">
-        <p className="text-base font-medium text-gray-800 leading-relaxed">
-          Welcome to your <strong>May 2026</strong> guide to free and low-cost happenings across the Asheville area and WNC. Designed for busy families — scan emoji badges to find what fits your crew. 🌻
-        </p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <Badge color="bg-green-100 text-green-800">🆓 Free</Badge>
-          <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
-          <Badge color="bg-purple-100 text-purple-800">🇪🇸 Spanish-friendly</Badge>
-          <Badge color="bg-pink-100 text-pink-800">🤟 ASL-inclusive</Badge>
-          <Badge color="bg-yellow-100 text-yellow-800">👶 Baby/toddler</Badge>
-          <Badge color="bg-orange-100 text-orange-800">🌽 Free food/produce</Badge>
-          <Badge color="bg-teal-100 text-teal-800">♿ Disability-inclusive</Badge>
-          <Badge color="bg-indigo-100 text-indigo-800">📱 Virtual option</Badge>
-        </div>
-      </div>
+  if (low.includes("manna market")) {
+    emoji = "🌽";
+    link = { url: "https://www.mannafoodbank.org/wnc-mobile-market-calendar/", text: "MANNA Calendar" };
+  } else if (low.includes("ymca mobile market") || (low.includes("ymca") && low.includes("market"))) {
+    emoji = "🥗";
+    link = { url: "https://www.ymcawnc.org/programs/community/food-programs", text: "YMCA Markets" };
+  } else if (low.includes("community engagement market")) {
+    emoji = "🥦";
+    link = { url: "https://www.mannafoodbank.org/wnc-mobile-market-calendar/", text: "MANNA Calendar" };
+  } else if (low.includes("ywam") || low.includes("free food truck")) {
+    emoji = "🚚";
+    link = { url: "https://ywamasheville.org", text: "YWAM Asheville" };
+  } else if (low.includes("12 baskets")) {
+    emoji = "🍽️";
+    link = { url: "https://www.ashevillepovertyinitiative.org/", text: "12 Baskets" };
+  } else if (low.includes("bounty & soul") || low.includes("bounty and soul")) {
+    emoji = "🥬";
+    link = { url: "https://www.bountyandsoul.org/", text: "Bounty & Soul" };
+  } else if (low.includes("clothing swap") || low.includes("hub")) {
+    emoji = "👕";
+  } else if (low.includes("truck city")) {
+    emoji = "🚒";
+    link = { url: "https://www.tanger.com/asheville/events/21680", text: "Tanger Outlets" };
+  } else if (low.includes("baby shower")) {
+    emoji = "🍼";
+  } else if (low.includes("dental") || low.includes("smiles")) {
+    emoji = "🦷";
+    link = { url: "https://www.zoedental.com/", text: "Zoë Dental" };
+  } else if (low.includes("yoga") || low.includes("pilates") || low.includes("fitness") || low.includes("aging")) {
+    emoji = "🧘";
+  } else if (low.includes("museum") || low.includes("amos")) {
+    emoji = "🦖";
+  } else if (low.includes("plant") || low.includes("garden")) {
+    emoji = "🪴";
+  } else if (low.includes("fishing")) {
+    emoji = "🎣";
+  } else if (low.includes("movie")) {
+    emoji = "🍿";
+  }
 
-      <SectionHeader emoji="🏓">Weekly Recreation & Play</SectionHeader>
-
-      <Card title="Aquatics Center Open Swim" accent="border-l-blue-400" icon="🏊">
-        <p><strong>Mondays · 6–8am & 11am–1pm · $5</strong></p>
-        <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
-        <p className="mt-1 text-xs">BCS Aquatic Center · 18 Ensley Stadium Loop</p>
-        <p className="mt-1"><LinkOut href="https://www.ymcawnc.org/programs/swimming/bcs-aquatics-center">Buncombe County Rec ↗</LinkOut></p>
-      </Card>
-
-      <Card title="Pickleball at Shiloh" accent="border-l-green-400" icon="🥒">
-        <p><strong>Mondays · 9am–1pm · $5/1 game · $20/5 games</strong></p>
-        <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
-        <p className="mt-1 text-xs">Linwood Crump Shiloh Community Center · 121 Shiloh Rd</p>
-        <p className="mt-1"><LinkOut href="https://www.pickleheads.com/courts/us/north-carolina/asheville/linwood-crump-shiloh-center">Asheville Parks & Rec ↗</LinkOut></p>
-      </Card>
-
-      <Card title="Social Seniors" accent="border-l-purple-400" icon="☕">
-        <p><strong>Mondays · 9am–5pm · FREE w/registration</strong></p>
-        <Badge color="bg-green-100 text-green-800">🆓 Free</Badge>
-        <p className="mt-1 text-xs">Grove Street Community Center</p>
-        <p className="mt-1"><LinkOut href="https://www.ashevillenc.gov/department/parks-recreation/">Asheville Parks & Rec ↗</LinkOut></p>
-      </Card>
-
-      <Card title="Indoor Playground at Caffeine & Chaos" accent="border-l-amber-400" icon="🏰">
-        <p><strong>Mondays · 9am–8pm · $8/ages 0-4 · $12/ages 5-12</strong></p>
-        <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
-        <Badge color="bg-yellow-100 text-yellow-800">👶 Kids</Badge>
-        <p className="mt-1 text-xs">1880 Dellwood Rd · <em>Waynesville</em></p>
-        <p className="mt-1"><LinkOut href="https://www.caffeine-chaos.com/">caffeine-chaos.com ↗</LinkOut></p>
-      </Card>
-
-      <SectionHeader emoji="✨">This Week's Don't-Miss</SectionHeader>
-
-      <Card title="YWAM Asheville Free Lunch Food Truck" accent="border-l-orange-400" icon="🚚">
-        <p><strong>Every Friday · 12pm NOON · FREE</strong> (until food runs out)</p>
-        <p className="mt-1">Blue "Operation Blessing" trailer. Corner of Aston & Lexington, Downtown.</p>
-        <Badge color="bg-green-100 text-green-800">🆓 Free</Badge>
-        <Badge color="bg-orange-100 text-orange-800">🌽 Free food</Badge>
-        <p className="mt-2 text-xs"><LinkOut href="https://ywamasheville.org">ywamasheville.org ↗</LinkOut> · <em>Downtown</em></p>
-    </div>
-  );
+  return { emoji, link };
 }
 
 function FreeFoodTab({ activeFilter }) {
@@ -158,30 +146,7 @@ function FreeFoodTab({ activeFilter }) {
 
       <SectionHeader emoji="🥗">Weekly Free Food & Produce</SectionHeader>
 
-      {[
-        { day: "Monday", items: [
-          { t: "12:30–2pm", n: "Bounty & Soul Farmers Market Truck", l: "Beacon Village, 120 Alexander Pl, Swannanoa", link: "https://www.bountyandsoul.org/" },
-        ]},
-        { day: "Tuesday", items: [
-          { t: "3–5pm", n: "Food Connection Truck (heat & serve meals)", l: "Food Lion, Fairview", link: "https://www.foodconnection.org/" },
-          { t: "3:30–5pm", n: "Bounty & Soul Produce Truck", l: "UNETE, 871 Riverside Dr", link: "https://www.bountyandsoul.org/" },
-        ]},
-        { day: "Wednesday", items: [
-          { t: "10am–1pm", n: "Welcome Table", l: "Haywood St. Congregation", link: "https://www.haywoodstreet.org/" },
-          { t: "5–6pm", n: "Food Connection Truck", l: "Bell UMC, Leicester", link: "https://www.foodconnection.org/" },
-        ]},
-        { day: "Thursday", items: [
-          { t: "3–5pm", n: "Food Connection Truck", l: "Francis Asbury Methodist, Candler", link: "https://www.foodconnection.org/" },
-          { t: "3:30–5:30pm", n: "Bounty & Soul Distribution", l: "BiLo, Black Mountain", link: "https://www.bountyandsoul.org/" },
-        ]},
-        { day: "Friday", items: [
-          { t: "11am–1pm", n: "Food Connection Truck", l: "Victory Fellowship, Weaverville", link: "https://www.foodconnection.org/" },
-          { t: "1:30–3pm", n: "Bounty & Soul Produce Market", l: "Southside Community Ctr, 285 Livingston St", link: "https://www.bountyandsoul.org/" },
-        ]},
-        { day: "Saturday", items: [
-          { t: "10–11:30am", n: "Bounty & Soul + Food Connection Truck", l: "Art Space Charter, Swannanoa", link: "https://www.bountyandsoul.org/" },
-        ]},
-      ].map(({ day, items }) => (
+      {WEEKLY_FOOD.map(({ day, items }) => (
         <div key={day} className="mb-5">
           <h3 className="font-black text-sm uppercase tracking-widest text-orange-600 mb-2 border-b border-orange-200 pb-1">{day}</h3>
           {items.map((it, i) => (
@@ -211,64 +176,7 @@ function FreeFoodTab({ activeFilter }) {
 function KidsTab() {
   const libCalUrl = "https://buncombe.librarycalendar.com/events/upcoming?age_groups%5B1%5D=1&age_groups%5B2%5D=2&age_groups%5B90%5D=90&age_groups%5B91%5D=91&age_groups%5B5%5D=5";
 
-  const libraryByDay = [
-    { day: "Mon", items: [
-      { n: "Baby Story Time (4–18mos)", t: "10:30am", l: "Pack Memorial Library" },
-      { n: "Baby Play Time (4–18mos)", t: "11am", l: "Pack Memorial Library" },
-    ]},
-    { day: "Tue", items: [
-      { n: "Toddler Story Time", t: "9:30am", l: "Oakley/South Asheville Library" },
-      { n: "Tiny Tots Yoga 🧘 (reg. req.)", t: "10am", l: "North Asheville Library" },
-      { n: "Baby Story Time", t: "10:30am", l: "Swannanoa Library" },
-      { n: "Toddler Story Time", t: "10:30am", l: "Pack Memorial Library" },
-      { n: "Preschool Story Time", t: "10:30am", l: "Leicester Library" },
-      { n: "Preschool Story Time 🇪🇸", t: "3:30pm", l: "Enka-Candler Library" },
-    ]},
-    { day: "Wed", items: [
-      { n: "Puppet Playtime / Hora de recreo con títeres 🇪🇸", t: "9am", l: "East Asheville Library" },
-      { n: "Baby Play Time (4–18mos)", t: "10:30am", l: "Fairview Library" },
-      { n: "Baby Play Time (4–18mos)", t: "10:30am", l: "North Asheville Library" },
-      { n: "Preschool Storytime", t: "10:30am", l: "South Buncombe/Skyland Library" },
-      { n: "Toddler Storytime", t: "10:30am", l: "East Asheville Library" },
-      { n: "Hora del Cuento — Bilingual 🇪🇸", t: "10:30am", l: "Enka-Candler Library" },
-      { n: "Family Story Time", t: "10:30am", l: "Black Mountain Library" },
-      { n: "Preschool Story Time", t: "10:30am", l: "Weaverville Library" },
-      { n: "Tiny Tots Yoga 🧘 (reg. req.)", t: "11am", l: "Swannanoa Library (alt. West AVL)" },
-      { n: "Baby Playtime", t: "11am", l: "Leicester Library" },
-    ]},
-    { day: "Thu", items: [
-      { n: "Baby Story Time (4–18mos)", t: "9:30am", l: "Oakley/South Asheville Library" },
-      { n: "Family Storytime", t: "10:30am", l: "Swannanoa Library" },
-      { n: "Toddler Story Time", t: "10:30am", l: "Leicester Library" },
-      { n: "Baby Story Time", t: "10:30am", l: "Black Mountain Library" },
-      { n: "Preschool Story Time", t: "10:30am", l: "Fairview Library" },
-      { n: "Baby Story Time", t: "3:30pm", l: "West Asheville Library" },
-    ]},
-    { day: "Fri", items: [
-      { n: "Toddler Story Time", t: "9:30am", l: "Fairview Library" },
-      { n: "Baby Play Time (0–18mos)", t: "10:30am", l: "Enka-Candler Library" },
-      { n: "Family Storytime", t: "10:30am", l: "South Buncombe/Skyland Library" },
-      { n: "Toddler Story Time", t: "10:30am", l: "North Asheville Library" },
-      { n: "Community Building — Expectant & New Parents", t: "3pm", l: "Weaverville Library" },
-    ]},
-    { day: "Sat", items: [
-      { n: "Family Storytime", t: "9:30am", l: "East Asheville Library" },
-      { n: "LEGO Club (K-5, 1st & 3rd Sat)", t: "10am", l: "Oakley/South Asheville Library" },
-      { n: "Family Story Time", t: "10:30am", l: "West Asheville Library" },
-      { n: "Hora del cuento — Bilingual 🇪🇸", t: "10:30am", l: "North Asheville Library" },
-    ]},
-  ];
-
-  return (
-    <div>
-      <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-5 mb-6 border border-pink-200">
-        <p className="text-base font-medium text-gray-800">Programs for babies, toddlers, preschoolers, and school-age kiddos. 🧸</p>
-      </div>
-
-      <SectionHeader emoji="📚">Weekly Library Programs</SectionHeader>
-      <p className="text-xs text-gray-500 mb-3">All programs free · <LinkOut href={libCalUrl}>See full library calendar ↗</LinkOut></p>
-
-      {libraryByDay.map(({ day, items }) => (
+      {WEEKLY_LIBRARY.map(({ day, items }) => (
         <div key={day} className="mb-4">
           <h3 className="font-black text-sm uppercase tracking-widest text-purple-600 mb-2 border-b border-purple-100 pb-1">{day}</h3>
           {items.map((it, i) => (
@@ -299,9 +207,6 @@ function KidsTab() {
           </li>
           <li className="pt-2 border-t border-gray-100">
             <strong><LinkOut href="https://www.buncombenc.gov/457/Register-of-Deeds">Register of Deeds</LinkOut> (Downtown Asheville):</strong> Free Diapers & Formula · Mon–Fri 8am–5pm
-          </li>
-          <li className="pt-2 border-t border-gray-100">
-            <strong><LinkOut href="https://www.lilac.health/">Lilac Health</LinkOut> Milk Depot (Black Mountain):</strong> Breast Milk & Lactation support at Temple Chiropractic
           </li>
         </ul>
       </div>
@@ -355,7 +260,6 @@ function NeighborhoodTab() {
     ]},
     { name: "Black Mountain", emoji: "⛰️", items: [
       { n: "Bounty & Soul Distribution", d: "Thu 3:30–5:30pm", l: "BiLo", link: "https://www.bountyandsoul.org/" },
-      { n: "Lilac Health Milk Depot", d: "By appt", l: "Temple Chiropractic", link: "https://www.lilac.health/" },
     ]},
     { name: "Bryson City (Swain Co.)", emoji: "🏡", items: [
       { n: "Restoration House Pantry", d: "Mon/Tue/Thu/Fri 10am–3pm · Wed 1–6pm", l: "81 Academy St", link: "https://www.restorationhousewnc.org/" },
@@ -441,29 +345,71 @@ function MayEventsTab({ activeFilter }) {
     return true;
   };
 
-  const filtered = events
-    .filter(ev => !isPast(ev.d))
-    .map(ev => ({ ...ev, items: ev.items.filter(filterFn) }))
-    .filter(ev => ev.items.length > 0);
+  const [showRecurring, setShowRecurring] = useState(false);
+  const daysInMay = Array.from({length: 31}, (_, i) => i + 1);
+
+  const getDayOfWeek = (dayNum) => new Date(2026, 4, dayNum).toLocaleDateString('en-US', { weekday: 'long' });
+
+  const allFilteredDays = daysInMay.map(dayNum => {
+    const dStr = `May ${dayNum}`;
+    if (isPast(dStr)) return null;
+
+    const dayOfWeek = getDayOfWeek(dayNum);
+
+    const specificEventObj = events.find(e => e.d === dStr);
+    let dayEvents = specificEventObj ? [...specificEventObj.items] : [];
+
+    if (showRecurring) {
+      const foodObj = WEEKLY_FOOD.find(w => w.day === dayOfWeek);
+      if (foodObj) {
+        dayEvents = dayEvents.concat(foodObj.items.map(i => `${i.t}: ${i.n} @ ${i.l} — FREE`));
+      }
+      const libObj = WEEKLY_LIBRARY.find(w => w.fullDay === dayOfWeek);
+      if (libObj) {
+        dayEvents = dayEvents.concat(libObj.items.map(i => `${i.n} (${i.t}) @ ${i.l} — FREE`));
+      }
+      if (dayOfWeek === "Friday") {
+        dayEvents.push("12:00 PM: Free Food Truck Asheville from YWAM, Aston Street & South Lexington Avenue — FREE");
+      }
+    }
+
+    dayEvents = dayEvents.filter(filterFn);
+
+    if (dayEvents.length === 0) return null;
+    return { d: dStr, items: dayEvents };
+  }).filter(Boolean);
 
   return (
     <div>
-      <div className="bg-gradient-to-br from-violet-50 to-fuchsia-50 rounded-2xl p-5 mb-6 border border-violet-200">
+      <div className="bg-gradient-to-br from-violet-50 to-fuchsia-50 rounded-2xl p-5 mb-4 border border-violet-200">
         <p className="text-base font-medium text-gray-800">Special one-time and seasonal events for May 2026. Always confirm with venue before attending! 📅</p>
       </div>
-      {filtered.map((ev, i) => (
+
+      <label className="flex items-center gap-2.5 bg-white px-4 py-3 rounded-xl shadow-sm border border-violet-100 mb-6 cursor-pointer select-none active:bg-gray-50 transition-colors">
+        <input 
+          type="checkbox" 
+          checked={showRecurring} 
+          onChange={(e) => setShowRecurring(e.target.checked)}
+          className="w-5 h-5 rounded border-violet-300 text-violet-600 focus:ring-violet-500 shrink-0"
+        />
+        <span className="text-sm font-bold text-gray-800 leading-tight">Include weekly recurring events (food, storytimes)</span>
+      </label>
+
+      {allFilteredDays.map((ev, i) => (
         <div key={i} className="mb-4 bg-white p-4 rounded-xl shadow-sm">
           <h3 className="font-black text-sm bg-violet-100 text-violet-800 rounded-lg px-3 py-1.5 inline-block mb-3">{ev.d}</h3>
           <div className="space-y-2">
             {ev.items.map((item, j) => {
-              const eventLink = getEventLink(item);
+              const meta = getEventMeta(item);
               return (
                 <div key={j} className="text-sm text-gray-700 leading-relaxed flex gap-2 items-start border-b border-gray-50 pb-2 last:border-0 last:pb-0">
-                  <span className="text-violet-400 shrink-0 mt-0.5">⭐</span>
-                  <span className="flex-1">{item}</span>
-                  {eventLink && (
-                    <a href={eventLink} target="_blank" rel="noopener noreferrer"
-                       className="shrink-0 text-[#c06030] font-bold text-base leading-none mt-0.5" aria-label="Source link">↗</a>
+                  <span className="shrink-0 mt-0.5 text-base">{meta.emoji}</span>
+                  <span className="flex-1 break-words">{item}</span>
+                  {meta.link && (
+                    <a href={meta.link.url} target="_blank" rel="noopener noreferrer"
+                       className="shrink-0 text-[#c06030] font-bold underline decoration-dotted underline-offset-2 hover:decoration-solid mt-0.5 whitespace-nowrap">
+                       {meta.link.text} ↗
+                    </a>
                   )}
                 </div>
               );
@@ -475,40 +421,13 @@ function MayEventsTab({ activeFilter }) {
   );
 }
 
-function TopActionsTab() {
-  const actions = [
-    { n: "1", title: "Get a Buncombe County Library Card", desc: "Unlocks free storytimes, baby gyms, Zoom Passes to attractions, Wi-Fi hotspots (password: readmore), tech help, and hundreds of free programs.", link: "https://www.buncombecounty.org/governing/depts/library/", color: "from-[#5d8a72] to-[#3a5a4a]" },
-    { n: "2", title: "Sign Up for Bounty & Soul Produce", desc: "Free fresh produce at multiple locations across Buncombe County every week. No income verification required.", link: "https://www.bountyandsoul.org/", color: "from-[#eab892] to-[#c06030]" },
-    { n: "3", title: "Bookmark Your Library's Zoom Pass Page", desc: "Free passes to WNC Nature Center, Asheville Museum of Science, Hands On! Museum, and more.", link: "https://www.buncombecounty.org/governing/depts/library/services/zoom-local-attraction-pass.aspx", color: "from-[#d4e8dc] to-[#5d8a72]" },
-    { n: "4", title: "Download the Libby App", desc: "Free ebooks, audiobooks, and magazines with your library card. Works on any device.", link: "https://www.overdrive.com/apps/libby", color: "from-[#eee9f5] to-[#7e6da0]" },
-    { n: "5", title: "Follow MANNA FoodBank's Mobile Market Calendar", desc: "Free food distributions at 20+ locations across WNC every week. No ID required.", link: "https://www.mannafoodbank.org/wnc-mobile-market-calendar/", color: "from-[#fed7aa] to-[#c06030]" },
-  ];
 
-  return (
-    <div>
-      <div className="space-y-4">
-        {actions.map((a, i) => (
-          <a key={i} href={a.link} target="_blank" rel="noopener noreferrer"
-             className="flex gap-4 items-start bg-white p-4 rounded-xl shadow-sm active:shadow-inner transition-all block no-underline">
-            <div className={`w-12 h-12 shrink-0 rounded-2xl bg-gradient-to-br ${a.color} flex items-center justify-center text-white font-black text-xl shadow-inner`}>
-              {a.n}
-            </div>
-            <div>
-              <h3 className="font-bold text-base text-[#c06030] underline decoration-dotted underline-offset-2">{a.title}</h3>
-              <p className="text-sm text-gray-600 mt-1 leading-relaxed">{a.desc}</p>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default function App() {
   const [tab, setTab] = useState(0);
   const [activeFilter, setActiveFilter] = useState("all");
 
-  const tabs = [HighlightsTab, FreeFoodTab, KidsTab, NeighborhoodTab, MayEventsTab, TopActionsTab];
+  const tabs = [MayEventsTab, FreeFoodTab, KidsTab, NeighborhoodTab];
   const ActiveTab = tabs[tab];
 
   return (
@@ -551,7 +470,7 @@ export default function App() {
         </div>
 
         {/* Filter Chips — only shown on May Events tab */}
-        {tab === 4 && (
+        {tab === 0 && (
           <div className="max-w-md mx-auto px-3 pb-3">
             <div className="flex gap-1.5 overflow-x-auto hide-scrollbar">
               {FILTERS.map((f) => (
