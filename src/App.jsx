@@ -176,6 +176,15 @@ function FreeFoodTab({ activeFilter }) {
 function KidsTab() {
   const libCalUrl = "https://buncombe.librarycalendar.com/events/upcoming?age_groups%5B1%5D=1&age_groups%5B2%5D=2&age_groups%5B90%5D=90&age_groups%5B91%5D=91&age_groups%5B5%5D=5";
 
+  return (
+    <div>
+      <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-5 mb-6 border border-pink-200">
+        <p className="text-base font-medium text-gray-800">Programs for babies, toddlers, preschoolers, and school-age kiddos. 🧸</p>
+      </div>
+
+      <SectionHeader emoji="📚">Weekly Library Programs</SectionHeader>
+      <p className="text-xs text-gray-500 mb-3">All programs free · <LinkOut href={libCalUrl}>See full library calendar ↗</LinkOut></p>
+
       {WEEKLY_LIBRARY.map(({ day, items }) => (
         <div key={day} className="mb-4">
           <h3 className="font-black text-sm uppercase tracking-widest text-purple-600 mb-2 border-b border-purple-100 pb-1">{day}</h3>
@@ -194,28 +203,32 @@ function KidsTab() {
         </div>
       ))}
 
-      <SectionHeader emoji="🍼">Baby Gear & Hygiene Resources</SectionHeader>
+      <>
+        <SectionHeader emoji="🍼">Baby Gear & Hygiene Resources</SectionHeader>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
-        <ul className="text-sm space-y-3">
-          <li>
-            <strong><LinkOut href="https://givenscommunities.org/wp-content/uploads/2022/05/GC-BEAR_Closets.pdf">BEAR Closets</LinkOut> (Free Clothes, Toys, Baby Gear):</strong><br />
-            ▸ <em>Abernethy UMC (Asheville):</em> 1st/3rd Wed 10am–2pm<br />
-            ▸ <em>St. Pauls UMC (Asheville):</em> 2nd/4th Wed 4pm–6pm<br />
-            ▸ <em>Snow Hill UMC (Candler):</em> Tue 1pm–5pm<br />
-            ▸ <em>Loving Hearts (Marion):</em> Wed 12pm–3pm
-          </li>
-          <li className="pt-2 border-t border-gray-100">
-            <strong><LinkOut href="https://www.buncombenc.gov/457/Register-of-Deeds">Register of Deeds</LinkOut> (Downtown Asheville):</strong> Free Diapers & Formula · Mon–Fri 8am–5pm
-          </li>
-        </ul>
-      </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+          <ul className="text-sm space-y-3">
+            <li>
+              <strong><LinkOut href="https://givenscommunities.org/wp-content/uploads/2022/05/GC-BEAR_Closets.pdf">BEAR Closets</LinkOut> (Free Clothes, Toys, Baby Gear):</strong><br />
+              ▸ <em>Abernethy UMC (Asheville):</em> 1st/3rd Wed 10am–2pm<br />
+              ▸ <em>St. Pauls UMC (Asheville):</em> 2nd/4th Wed 4pm–6pm<br />
+              ▸ <em>Snow Hill UMC (Candler):</em> Tue 1pm–5pm<br />
+              ▸ <em>Loving Hearts (Marion):</em> Wed 12pm–3pm
+            </li>
+            <li className="pt-2 border-t border-gray-100">
+              <strong><LinkOut href="https://www.buncombenc.gov/457/Register-of-Deeds">Register of Deeds</LinkOut> (Downtown Asheville):</strong> Free Diapers & Formula · Mon–Fri 8am–5pm
+            </li>
+          </ul>
+        </div>
+      </>
 
-      <SectionHeader emoji="🐾">Free Pet Pantries</SectionHeader>
-      <Card title="Don't let your furry friends go hungry" accent="border-l-rose-500" icon="🐶">
-        <p>Free pet food available at <LinkOut href="https://www.abccm.org/">ABCCM</LinkOut> (24 Cumberland Ave), <LinkOut href="https://www.ashevillepovertyinitiative.org/">12 Baskets</LinkOut> (610 Haywood Rd), and <LinkOut href="https://www.haywoodstreet.org/">Haywood Street Congregation</LinkOut>.</p>
-        <p className="mt-2 text-xs">See <LinkOut href="http://tiny.cc/freeinwnc">tiny.cc/freeinwnc</LinkOut> for a full list of 20+ locations!</p>
-      </Card>
+      <>
+        <SectionHeader emoji="🐾">Free Pet Pantries</SectionHeader>
+        <Card title="Don't let your furry friends go hungry" accent="border-l-rose-500" icon="🐶">
+          <p>Free pet food available at <LinkOut href="https://www.abccm.org/">ABCCM</LinkOut> (24 Cumberland Ave), <LinkOut href="https://www.ashevillepovertyinitiative.org/">12 Baskets</LinkOut> (610 Haywood Rd), and <LinkOut href="https://www.haywoodstreet.org/">Haywood Street Congregation</LinkOut>.</p>
+          <p className="mt-2 text-xs">See <LinkOut href="http://tiny.cc/freeinwnc">tiny.cc/freeinwnc</LinkOut> for a full list of 20+ locations!</p>
+        </Card>
+      </>
     </div>
   );
 }
