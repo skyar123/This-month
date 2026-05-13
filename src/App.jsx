@@ -87,14 +87,14 @@ function HighlightsTab() {
         <p><strong>Mondays · 6–8am & 11am–1pm · $5</strong></p>
         <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
         <p className="mt-1 text-xs">BCS Aquatic Center · 18 Ensley Stadium Loop</p>
-        <p className="mt-1"><LinkOut href="https://www.buncombecounty.org/governing/depts/recreation-services/">Buncombe County Rec ↗</LinkOut></p>
+        <p className="mt-1"><LinkOut href="https://www.ymcawnc.org/programs/swimming/bcs-aquatics-center">Buncombe County Rec ↗</LinkOut></p>
       </Card>
 
       <Card title="Pickleball at Shiloh" accent="border-l-green-400" icon="🥒">
         <p><strong>Mondays · 9am–1pm · $5/1 game · $20/5 games</strong></p>
         <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
         <p className="mt-1 text-xs">Linwood Crump Shiloh Community Center · 121 Shiloh Rd</p>
-        <p className="mt-1"><LinkOut href="https://www.ashevillenc.gov/department/parks-recreation/">Asheville Parks & Rec ↗</LinkOut></p>
+        <p className="mt-1"><LinkOut href="https://www.pickleheads.com/courts/us/north-carolina/asheville/linwood-crump-shiloh-center">Asheville Parks & Rec ↗</LinkOut></p>
       </Card>
 
       <Card title="Social Seniors" accent="border-l-purple-400" icon="☕">
