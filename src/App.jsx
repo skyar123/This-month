@@ -109,7 +109,7 @@ function HighlightsTab() {
         <Badge color="bg-blue-100 text-blue-800">💲 Under $10</Badge>
         <Badge color="bg-yellow-100 text-yellow-800">👶 Kids</Badge>
         <p className="mt-1 text-xs">1880 Dellwood Rd · <em>Waynesville</em></p>
-        <p className="mt-1"><LinkOut href="https://www.caffeineandchaos.com/">caffeineandchaos.com ↗</LinkOut></p>
+        <p className="mt-1"><LinkOut href="https://www.caffeine-chaos.com/">caffeine-chaos.com ↗</LinkOut></p>
       </Card>
 
       <SectionHeader emoji="✨">This Week's Don't-Miss</SectionHeader>
@@ -120,36 +120,11 @@ function HighlightsTab() {
         <Badge color="bg-green-100 text-green-800">🆓 Free</Badge>
         <Badge color="bg-orange-100 text-orange-800">🌽 Free food</Badge>
         <p className="mt-2 text-xs"><LinkOut href="https://ywamasheville.org">ywamasheville.org ↗</LinkOut> · <em>Downtown</em></p>
-      </Card>
-
-      <Card title="Spring Resource Hub & Clothing Swap" accent="border-l-sky-400" icon="👕">
-        <p><strong>May 18 · 11am–1pm · FREE</strong></p>
-        <p className="mt-1">Bring gently used kids' clothes, books, toys, diapers & baby items to swap. Playground, bubbles, music! "Bring what you can, take what you need."</p>
-        <Badge color="bg-green-100 text-green-800">🆓 Free</Badge>
-        <Badge color="bg-yellow-100 text-yellow-800">👶 Kids & babies</Badge>
-        <p className="mt-2 text-xs">27 Balm Grove Ave · <em>West Asheville</em></p>
-      </Card>
-
-      <Card title="Downtown After 5" accent="border-l-emerald-400" icon="🎶">
-        <p><strong>May 17 · 5–9pm · FREE</strong></p>
-        <p className="mt-1">Live music at Pack Square Park — every 3rd Friday, April–September.</p>
-        <Badge color="bg-green-100 text-green-800">🆓 Free</Badge>
-        <p className="mt-2 text-xs"><LinkOut href="https://www.ashevilledowntown.org/">Asheville Downtown Association ↗</LinkOut> · <em>Downtown</em></p>
-      </Card>
-
-      <Card title="Truck City AVL (with Quiet Hour!)" accent="border-l-teal-400" icon="🚒">
-        <p><strong>May 18 · 1–4pm · FREE</strong> (Quiet Hour 1–2pm)</p>
-        <p className="mt-1">Touch-a-truck event with Rec 'n' Roll Zone. Quiet Hour first for sensory-sensitive families.</p>
-        <Badge color="bg-green-100 text-green-800">🆓 Free</Badge>
-        <Badge color="bg-yellow-100 text-yellow-800">👶 Kids</Badge>
-        <Badge color="bg-teal-100 text-teal-800">♿ Sensory-friendly hour</Badge>
-        <p className="mt-2 text-xs"><LinkOut href="https://www.tanger.com/asheville/events/21680">Tanger Outlets Event ↗</LinkOut> · <em>Arden / South Asheville</em></p>
-      </Card>
     </div>
   );
 }
 
-function FreeFoodTab() {
+function FreeFoodTab({ activeFilter }) {
   return (
     <div>
       <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-5 mb-6 border border-orange-200">
