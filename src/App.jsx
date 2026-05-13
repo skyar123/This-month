@@ -52,7 +52,7 @@ function getEventLink(text) {
   if (low.includes("ymca mobile market") || (low.includes("ymca") && low.includes("market"))) return "https://www.ymcawnc.org/programs/community/food-programs";
   if (low.includes("community engagement market")) return "https://www.mannafoodbank.org/wnc-mobile-market-calendar/";
   if (low.includes("ywam") || low.includes("free food truck asheville")) return "https://ywamasheville.org";
-  if (low.includes("12 baskets")) return "https://www.12basketscafe.org/";
+  if (low.includes("12 baskets")) return "https://www.ashevillepovertyinitiative.org/";
   if (low.includes("bounty & soul") || low.includes("bounty and soul")) return "https://www.bountyandsoul.org/";
   if (low.includes("feed the people")) return "https://www.facebook.com/FeedThePeopleAVL/";
   if (low.includes("food connection")) return "https://www.foodconnection.org/";
@@ -234,12 +234,54 @@ function FreeFoodTab() {
 }
 
 function KidsTab() {
-  const storytimes = [
-    { n: "Family Storytime", w: "Mon 10am", l: "Edneyville Library & Mills River Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
-    { n: "Baby Gym (4–18mos)", w: "Wed 10:30am", l: "Fairview Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
-    { n: "Puppet Playtime", w: "Wed 10–11:30am", l: "East AVL Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
-    { n: "Hora del Cuento — Bilingual 🇪🇸", w: "Wed 10:30am", l: "Enka-Candler Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
-    { n: "Baby Gym (4–18mos)", w: "Thu 11am", l: "Pack Library (Downtown)", link: "https://www.buncombecounty.org/governing/depts/library/" },
+  const libCalUrl = "https://buncombe.librarycalendar.com/events/upcoming?age_groups%5B1%5D=1&age_groups%5B2%5D=2&age_groups%5B90%5D=90&age_groups%5B91%5D=91&age_groups%5B5%5D=5";
+
+  const libraryByDay = [
+    { day: "Mon", items: [
+      { n: "Baby Story Time (4–18mos)", t: "10:30am", l: "Pack Memorial Library" },
+      { n: "Baby Play Time (4–18mos)", t: "11am", l: "Pack Memorial Library" },
+    ]},
+    { day: "Tue", items: [
+      { n: "Toddler Story Time", t: "9:30am", l: "Oakley/South Asheville Library" },
+      { n: "Tiny Tots Yoga 🧘 (reg. req.)", t: "10am", l: "North Asheville Library" },
+      { n: "Baby Story Time", t: "10:30am", l: "Swannanoa Library" },
+      { n: "Toddler Story Time", t: "10:30am", l: "Pack Memorial Library" },
+      { n: "Preschool Story Time", t: "10:30am", l: "Leicester Library" },
+      { n: "Preschool Story Time 🇪🇸", t: "3:30pm", l: "Enka-Candler Library" },
+    ]},
+    { day: "Wed", items: [
+      { n: "Puppet Playtime / Hora de recreo con títeres 🇪🇸", t: "9am", l: "East Asheville Library" },
+      { n: "Baby Play Time (4–18mos)", t: "10:30am", l: "Fairview Library" },
+      { n: "Baby Play Time (4–18mos)", t: "10:30am", l: "North Asheville Library" },
+      { n: "Preschool Storytime", t: "10:30am", l: "South Buncombe/Skyland Library" },
+      { n: "Toddler Storytime", t: "10:30am", l: "East Asheville Library" },
+      { n: "Hora del Cuento — Bilingual 🇪🇸", t: "10:30am", l: "Enka-Candler Library" },
+      { n: "Family Story Time", t: "10:30am", l: "Black Mountain Library" },
+      { n: "Preschool Story Time", t: "10:30am", l: "Weaverville Library" },
+      { n: "Tiny Tots Yoga 🧘 (reg. req.)", t: "11am", l: "Swannanoa Library (alt. West AVL)" },
+      { n: "Baby Playtime", t: "11am", l: "Leicester Library" },
+    ]},
+    { day: "Thu", items: [
+      { n: "Baby Story Time (4–18mos)", t: "9:30am", l: "Oakley/South Asheville Library" },
+      { n: "Family Storytime", t: "10:30am", l: "Swannanoa Library" },
+      { n: "Toddler Story Time", t: "10:30am", l: "Leicester Library" },
+      { n: "Baby Story Time", t: "10:30am", l: "Black Mountain Library" },
+      { n: "Preschool Story Time", t: "10:30am", l: "Fairview Library" },
+      { n: "Baby Story Time", t: "3:30pm", l: "West Asheville Library" },
+    ]},
+    { day: "Fri", items: [
+      { n: "Toddler Story Time", t: "9:30am", l: "Fairview Library" },
+      { n: "Baby Play Time (0–18mos)", t: "10:30am", l: "Enka-Candler Library" },
+      { n: "Family Storytime", t: "10:30am", l: "South Buncombe/Skyland Library" },
+      { n: "Toddler Story Time", t: "10:30am", l: "North Asheville Library" },
+      { n: "Community Building — Expectant & New Parents", t: "3pm", l: "Weaverville Library" },
+    ]},
+    { day: "Sat", items: [
+      { n: "Family Storytime", t: "9:30am", l: "East Asheville Library" },
+      { n: "LEGO Club (K-5, 1st & 3rd Sat)", t: "10am", l: "Oakley/South Asheville Library" },
+      { n: "Family Story Time", t: "10:30am", l: "West Asheville Library" },
+      { n: "Hora del cuento — Bilingual 🇪🇸", t: "10:30am", l: "North Asheville Library" },
+    ]},
   ];
 
   return (
@@ -248,17 +290,24 @@ function KidsTab() {
         <p className="text-base font-medium text-gray-800">Programs for babies, toddlers, preschoolers, and school-age kiddos. 🧸</p>
       </div>
 
-      <SectionHeader emoji="📚">Weekly Storytimes & Baby Programs</SectionHeader>
-      {storytimes.map((p, i) => (
-        <div key={i} className="flex gap-3 items-start mb-3 text-sm bg-white rounded-lg p-3 shadow-sm">
-          <span className="text-2xl mt-0.5">📖</span>
-          <div className="flex-1 min-w-0">
-            <div className="font-bold text-gray-900 text-base">
-              <LinkOut href={p.link}>{p.n}</LinkOut>
+      <SectionHeader emoji="📚">Weekly Library Programs</SectionHeader>
+      <p className="text-xs text-gray-500 mb-3">All programs free · <LinkOut href={libCalUrl}>See full library calendar ↗</LinkOut></p>
+
+      {libraryByDay.map(({ day, items }) => (
+        <div key={day} className="mb-4">
+          <h3 className="font-black text-sm uppercase tracking-widest text-purple-600 mb-2 border-b border-purple-100 pb-1">{day}</h3>
+          {items.map((it, i) => (
+            <div key={i} className="flex gap-3 items-start mb-2 text-sm bg-white rounded-lg p-3 shadow-sm">
+              <span className="text-2xl mt-0.5">📖</span>
+              <div className="flex-1 min-w-0">
+                <div className="font-bold text-gray-900 text-base">
+                  <LinkOut href={libCalUrl}>{it.n}</LinkOut>
+                </div>
+                <div className="text-gray-500 font-medium text-sm">🕒 {it.t}</div>
+                <div className="text-gray-500 text-xs mt-0.5">📍 {it.l}</div>
+              </div>
             </div>
-            <div className="text-gray-500 font-medium text-sm">🕒 {p.w}</div>
-            <div className="text-gray-500 text-xs mt-0.5">📍 {p.l}</div>
-          </div>
+          ))}
         </div>
       ))}
 
@@ -267,27 +316,24 @@ function KidsTab() {
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
         <ul className="text-sm space-y-3">
           <li>
-            <strong><LinkOut href="https://www.bfrwnc.org/bear-closets">BEAR Closets</LinkOut> (Free Clothes, Toys, Baby Gear):</strong><br />
+            <strong><LinkOut href="https://givenscommunities.org/wp-content/uploads/2022/05/GC-BEAR_Closets.pdf">BEAR Closets</LinkOut> (Free Clothes, Toys, Baby Gear):</strong><br />
             ▸ <em>Abernethy UMC (Asheville):</em> 1st/3rd Wed 10am–2pm<br />
             ▸ <em>St. Pauls UMC (Asheville):</em> 2nd/4th Wed 4pm–6pm<br />
             ▸ <em>Snow Hill UMC (Candler):</em> Tue 1pm–5pm<br />
             ▸ <em>Loving Hearts (Marion):</em> Wed 12pm–3pm
           </li>
           <li className="pt-2 border-t border-gray-100">
-            <strong><LinkOut href="https://www.buncombecounty.org/governing/depts/register-of-deeds/">Register of Deeds</LinkOut> (Downtown Asheville):</strong> Free Diapers & Formula · Mon–Fri 8am–5pm
+            <strong><LinkOut href="https://www.buncombenc.gov/457/Register-of-Deeds">Register of Deeds</LinkOut> (Downtown Asheville):</strong> Free Diapers & Formula · Mon–Fri 8am–5pm
           </li>
           <li className="pt-2 border-t border-gray-100">
             <strong><LinkOut href="https://www.lilac.health/">Lilac Health</LinkOut> Milk Depot (Black Mountain):</strong> Breast Milk & Lactation support at Temple Chiropractic
-          </li>
-          <li className="pt-2 border-t border-gray-100">
-            <strong><LinkOut href="https://www.buncombecounty.org/governing/depts/library/">Sand Hill Library</LinkOut> (Candler):</strong> 24/7 Period Products Pantry located outside
           </li>
         </ul>
       </div>
 
       <SectionHeader emoji="🐾">Free Pet Pantries</SectionHeader>
       <Card title="Don't let your furry friends go hungry" accent="border-l-rose-500" icon="🐶">
-        <p>Free pet food available at <LinkOut href="https://www.abccm.org/">ABCCM</LinkOut> (24 Cumberland Ave), <LinkOut href="https://www.12basketscafe.org/">12 Baskets</LinkOut> (610 Haywood Rd), and <LinkOut href="https://www.haywoodstreet.org/">Haywood Street Congregation</LinkOut>.</p>
+        <p>Free pet food available at <LinkOut href="https://www.abccm.org/">ABCCM</LinkOut> (24 Cumberland Ave), <LinkOut href="https://www.ashevillepovertyinitiative.org/">12 Baskets</LinkOut> (610 Haywood Rd), and <LinkOut href="https://www.haywoodstreet.org/">Haywood Street Congregation</LinkOut>.</p>
         <p className="mt-2 text-xs">See <LinkOut href="http://tiny.cc/freeinwnc">tiny.cc/freeinwnc</LinkOut> for a full list of 20+ locations!</p>
       </Card>
     </div>
@@ -300,11 +346,11 @@ function NeighborhoodTab() {
       { n: "Welcome Table (hot meals)", d: "Wed 10am–1pm", l: "Haywood St. Congregation", link: "https://www.haywoodstreet.org/" },
       { n: "YWAM Free Lunch Truck", d: "Fri 12pm", l: "Corner of Aston & Lexington", link: "https://ywamasheville.org" },
       { n: "BeLoved Pantry", d: "24/7", l: "15 W Walnut St & N Lexington Ave", link: "https://www.belovedasheville.com/" },
-      { n: "Pack Library Programs", d: "Mon–Sat", l: "67 Haywood St", link: "https://www.buncombecounty.org/governing/depts/library/" },
-      { n: "Register of Deeds — Free Diapers & Formula", d: "Mon–Fri 8am–5pm", l: "205 College St", link: "https://www.buncombecounty.org/governing/depts/register-of-deeds/" },
+      { n: "Pack Library Programs", d: "Mon–Sat", l: "67 Haywood St", link: "https://buncombe.librarycalendar.com/events/upcoming?age_groups%5B1%5D=1&age_groups%5B2%5D=2&age_groups%5B90%5D=90&age_groups%5B91%5D=91&age_groups%5B5%5D=5" },
+      { n: "Register of Deeds — Free Diapers & Formula", d: "Mon–Fri 8am–5pm", l: "205 College St", link: "https://www.buncombenc.gov/457/Register-of-Deeds" },
     ]},
     { name: "West Asheville", emoji: "🌿", items: [
-      { n: "12 Baskets Café (free meals)", d: "Mon–Fri 3–5pm", l: "610 Haywood Rd", link: "https://www.12basketscafe.org/" },
+      { n: "12 Baskets Café (free meals)", d: "Mon–Fri 3–5pm", l: "610 Haywood Rd", link: "https://www.ashevillepovertyinitiative.org/" },
       { n: "Feed The People Dinner", d: "Tue 5:30pm", l: "Oakwood & Haywood", link: "https://www.facebook.com/FeedThePeopleAVL/" },
       { n: "BeLoved Pantry", d: "24/7", l: "1050 Haywood Rd", link: "https://www.belovedasheville.com/" },
       { n: "Spring Resource Hub & Clothing Swap", d: "May 18 · 11am–1pm", l: "27 Balm Grove Ave", link: "" },
@@ -320,9 +366,8 @@ function NeighborhoodTab() {
     ]},
     { name: "Candler / Enka", emoji: "🌄", items: [
       { n: "Food Connection Truck", d: "Thu 3–5pm", l: "Francis Asbury Methodist", link: "https://www.foodconnection.org/" },
-      { n: "BEAR Closet (baby gear)", d: "Tue 1–5pm", l: "Snow Hill UMC", link: "https://www.bfrwnc.org/bear-closets" },
-      { n: "Sand Hill Library Period Pantry", d: "24/7", l: "Sand Hill Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
-      { n: "Hora del Cuento (Bilingual Storytime)", d: "Wed 10:30am", l: "Enka-Candler Library", link: "https://www.buncombecounty.org/governing/depts/library/" },
+      { n: "BEAR Closet (baby gear)", d: "Tue 1–5pm", l: "Snow Hill UMC", link: "https://givenscommunities.org/wp-content/uploads/2022/05/GC-BEAR_Closets.pdf" },
+      { n: "Hora del Cuento (Bilingual Storytime)", d: "Wed 10:30am", l: "Enka-Candler Library", link: "https://buncombe.librarycalendar.com/events/upcoming?age_groups%5B1%5D=1&age_groups%5B2%5D=2&age_groups%5B90%5D=90&age_groups%5B91%5D=91&age_groups%5B5%5D=5" },
     ]},
     { name: "Weaverville / Woodfin", emoji: "🌲", items: [
       { n: "Food Connection Truck", d: "Fri 11am–1pm", l: "Victory Fellowship", link: "https://www.foodconnection.org/" },
@@ -398,6 +443,18 @@ function MayEventsTab({ activeFilter }) {
     { d: "May 31", items: ["4:00 PM: Emote Clothing Swap — Mask required, 444 Haywood Rd — FREE"] },
   ];
 
+  const today = new Date();
+  const todayMonth = today.getMonth() + 1;
+  const todayDay = today.getDate();
+
+  const isPast = (dateStr) => {
+    const [monthName, dayStr] = dateStr.split(" ");
+    const months = { Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12 };
+    const m = months[monthName];
+    const d = parseInt(dayStr);
+    return m < todayMonth || (m === todayMonth && d < todayDay);
+  };
+
   const filterFn = (item) => {
     if (activeFilter === "all") return true;
     const low = item.toLowerCase();
@@ -410,6 +467,7 @@ function MayEventsTab({ activeFilter }) {
   };
 
   const filtered = events
+    .filter(ev => !isPast(ev.d))
     .map(ev => ({ ...ev, items: ev.items.filter(filterFn) }))
     .filter(ev => ev.items.length > 0);
 
@@ -453,9 +511,6 @@ function TopActionsTab() {
 
   return (
     <div>
-      <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 mb-6 border border-amber-200 shadow-sm">
-        <p className="text-base font-medium text-gray-800">If you do <strong>nothing else</strong> this month, do these things. Each one unlocks multiple resources. ⭐</p>
-      </div>
       <div className="space-y-4">
         {actions.map((a, i) => (
           <a key={i} href={a.link} target="_blank" rel="noopener noreferrer"
@@ -520,24 +575,26 @@ export default function App() {
           </div>
         </div>
 
-        {/* Filter Chips */}
-        <div className="max-w-md mx-auto px-3 pb-3">
-          <div className="flex gap-1.5 overflow-x-auto hide-scrollbar">
-            {FILTERS.map((f) => (
-              <button
-                key={f.key}
-                onClick={() => setActiveFilter(activeFilter === f.key ? "all" : f.key)}
-                className={`whitespace-nowrap px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all border shrink-0 ${
-                  activeFilter === f.key
-                    ? "bg-[#c06030] text-white border-[#c06030] shadow-sm"
-                    : "bg-white text-[#4a5e57] border-[#d4e8dc] active:bg-[#fbeede]"
-                }`}
-              >
-                {f.emoji} {f.label}
-              </button>
-            ))}
+        {/* Filter Chips — only shown on May Events tab */}
+        {tab === 4 && (
+          <div className="max-w-md mx-auto px-3 pb-3">
+            <div className="flex gap-1.5 overflow-x-auto hide-scrollbar">
+              {FILTERS.map((f) => (
+                <button
+                  key={f.key}
+                  onClick={() => setActiveFilter(activeFilter === f.key ? "all" : f.key)}
+                  className={`whitespace-nowrap px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all border shrink-0 ${
+                    activeFilter === f.key
+                      ? "bg-[#c06030] text-white border-[#c06030] shadow-sm"
+                      : "bg-white text-[#4a5e57] border-[#d4e8dc] active:bg-[#fbeede]"
+                  }`}
+                >
+                  {f.emoji} {f.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </header>
 
       <main className="max-w-md mx-auto px-4 py-5">
@@ -547,7 +604,6 @@ export default function App() {
       <footer className="max-w-md mx-auto px-4 pt-8 pb-safe text-center text-xs text-gray-400" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 32px)' }}>
         <img src="/logo.svg" alt="ConnectEd Circles" className="w-8 h-8 mx-auto mb-3 opacity-40" />
         <p className="font-bold text-[#3a5a4a]">ConnectEd Circles</p>
-        <p className="mt-1">App by ChildFirst / RHA</p>
         <p className="mt-2 font-medium text-[#5d8a72]">Made with care for WNC families 💛</p>
       </footer>
     </div>
