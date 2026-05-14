@@ -213,7 +213,7 @@ function KidsTab() {
               ▸ <em>Abernethy UMC (Asheville):</em> 1st/3rd Wed 10am–2pm<br />
               ▸ <em>St. Pauls UMC (Asheville):</em> 2nd/4th Wed 4pm–6pm<br />
               ▸ <em>Snow Hill UMC (Candler):</em> Tue 1pm–5pm<br />
-              ▸ <em>Loving Hearts (Marion):</em> Wed 12pm–3pm
+              ▸ <em>Loving Hearts (Marion):</em> Tue 12pm–4pm · Wed 11am–3pm · ages 0–15
             </li>
             <li className="pt-2 border-t border-gray-100">
               <strong><LinkOut href="https://www.buncombenc.gov/457/Register-of-Deeds">Register of Deeds</LinkOut> (Downtown Asheville):</strong> Free Diapers & Formula · Mon–Fri 8am–5pm
@@ -277,6 +277,19 @@ function NeighborhoodTab() {
     { name: "Bryson City (Swain Co.)", emoji: "🏡", items: [
       { n: "Restoration House Pantry", d: "Mon/Tue/Thu/Fri 10am–3pm · Wed 1–6pm", l: "81 Academy St", link: "https://www.restorationhousewnc.org/" },
       { n: "24/7 Blessing Box + Vending Machine", d: "Always open", l: "81 Academy St (outside)", link: "https://www.restorationhousewnc.org/" },
+    ]},
+    { name: "Marion / McDowell County", emoji: "🏞️", items: [
+      { n: "YMCA Mobile Market – East Marion", d: "2nd Thu · 5pm", l: "900 Baldwin Ave, Marion", link: "https://www.ymcawnc.org/programs/community/food-programs" },
+      { n: "YMCA Mobile Market – Old Fort", d: "Last Thu · 2:30pm", l: "909 E Main St, Old Fort", link: "https://www.ymcawnc.org/programs/community/food-programs" },
+      { n: "Feed the People (free food)", d: "Thu 12–3pm", l: "4231 US-221, Marion", link: "" },
+      { n: "New Hope McDowell (free food)", d: "Wednesdays", l: "1085 Baldwin Ave, Marion", link: "" },
+      { n: "Love Box (24/7 free pantry)", d: "Always open", l: "900 Baldwin Ave & 151 Ridge Rd, Marion", link: "" },
+      { n: "Marion Tailgate Market (SNAP/EBT accepted)", d: "Saturdays", l: "Downtown Marion", link: "" },
+      { n: "Loving Hearts BEAR Closet (clothes & gear, ages 0–15)", d: "Tue 12–4pm · Wed 11am–3pm", l: "337 Garden Creek Rd, Marion", link: "https://givenscommunities.org/wp-content/uploads/2022/05/GC-BEAR_Closets.pdf" },
+      { n: "MATCH – Resource Navigator & FoodBox Delivery", d: "Weekdays · 📞 828-659-5289", l: "430 Rankin Dr, Marion", link: "" },
+      { n: "McDowell Transit (free rides to appointments)", d: "Call ahead · 📞 828-559-0744", l: "Marion", link: "" },
+      { n: "CULA (bilingual services & resources)", d: "Weekdays", l: "79 Academy St, Marion", link: "" },
+      { n: "McDowell Public Library", d: "Mon–Sat", l: "90 W Court St, Marion", link: "" },
     ]},
   ];
 
