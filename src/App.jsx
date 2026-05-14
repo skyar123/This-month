@@ -26,7 +26,7 @@ const FILTERS = [
   { label: "Kids", key: "kids", emoji: "👶" },
   { label: "Food", key: "food", emoji: "🌽" },
   { label: "Bilingual", key: "bilingual", emoji: "🇪🇸" },
-  { label: "Sensory", key: "sensory", emoji: "♿" },
+  { label: "Sensory", key: "sensory", emoji: "🌈" },
 ];
 
 const linkStyle = "underline decoration-dotted underline-offset-2 hover:decoration-solid";
