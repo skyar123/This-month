@@ -31,6 +31,11 @@ const FILTERS = [
 
 const linkStyle = "underline decoration-dotted underline-offset-2 hover:decoration-solid";
 
+const MANNA_URL = "https://www.mannafoodbank.org/wnc-mobile-market-calendar/";
+const YMCA_URL = "https://www.ymcawnc.org/programs/community/food-programs";
+const LIB_URL = "https://buncombe.librarycalendar.com/events/upcoming?age_groups%5B1%5D=1&age_groups%5B2%5D=2&age_groups%5B90%5D=90&age_groups%5B91%5D=91&age_groups%5B5%5D=5";
+const ARMS_URL = "https://www.armsaroundasd.org/sign-up";
+
 function Badge({ children, color = "bg-amber-100 text-amber-800" }) {
   return <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold ${color} mr-1 mb-1`}>{children}</span>;
 }
@@ -64,52 +69,23 @@ function LinkOut({ href, children }) {
   );
 }
 
-function getEventMeta(text) {
+function getEventEmoji(text) {
   const low = text.toLowerCase();
-  let emoji = "✨";
-  let link = null;
-
-  if (low.includes("manna market")) {
-    emoji = "🌽";
-    link = { url: "https://www.mannafoodbank.org/wnc-mobile-market-calendar/", text: "MANNA Calendar" };
-  } else if (low.includes("ymca mobile market") || (low.includes("ymca") && low.includes("market"))) {
-    emoji = "🥗";
-    link = { url: "https://www.ymcawnc.org/programs/community/food-programs", text: "YMCA Markets" };
-  } else if (low.includes("community engagement market")) {
-    emoji = "🥦";
-    link = { url: "https://www.mannafoodbank.org/wnc-mobile-market-calendar/", text: "MANNA Calendar" };
-  } else if (low.includes("ywam") || low.includes("free food truck")) {
-    emoji = "🚚";
-    link = { url: "https://ywamasheville.org", text: "YWAM Asheville" };
-  } else if (low.includes("12 baskets")) {
-    emoji = "🍽️";
-    link = { url: "https://www.ashevillepovertyinitiative.org/", text: "12 Baskets" };
-  } else if (low.includes("bounty & soul") || low.includes("bounty and soul")) {
-    emoji = "🥬";
-    link = { url: "https://www.bountyandsoul.org/", text: "Bounty & Soul" };
-  } else if (low.includes("clothing swap") || low.includes("hub")) {
-    emoji = "👕";
-  } else if (low.includes("truck city")) {
-    emoji = "🚒";
-    link = { url: "https://www.tanger.com/asheville/events/21680", text: "Tanger Outlets" };
-  } else if (low.includes("baby shower")) {
-    emoji = "🍼";
-  } else if (low.includes("dental") || low.includes("smiles")) {
-    emoji = "🦷";
-    link = { url: "https://www.zoedental.com/", text: "Zoë Dental" };
-  } else if (low.includes("yoga") || low.includes("pilates") || low.includes("fitness") || low.includes("aging")) {
-    emoji = "🧘";
-  } else if (low.includes("museum") || low.includes("amos")) {
-    emoji = "🦖";
-  } else if (low.includes("plant") || low.includes("garden")) {
-    emoji = "🪴";
-  } else if (low.includes("fishing")) {
-    emoji = "🎣";
-  } else if (low.includes("movie")) {
-    emoji = "🍿";
-  }
-
-  return { emoji, link };
+  if (low.includes("manna") || (low.includes("market") && !low.includes("ymca"))) return "🌽";
+  if (low.includes("ymca")) return "🥗";
+  if (low.includes("ywam") || low.includes("food truck")) return "🚚";
+  if (low.includes("feast") || low.includes("feed the people") || low.includes("dinner") || low.includes("12 baskets")) return "🍽️";
+  if (low.includes("bounty")) return "🥬";
+  if (low.includes("dental") || low.includes("smiles")) return "🦷";
+  if (low.includes("yoga") || low.includes("pound") || low.includes("stretching") || low.includes("dance") || low.includes("mindfulness") || low.includes("fitness")) return "🧘";
+  if (low.includes("museum") || low.includes("amos")) return "🦖";
+  if (low.includes("movie") || low.includes("video game")) return "🍿";
+  if (low.includes("art") || low.includes("craft") || low.includes("munch") || low.includes("flower")) return "🎨";
+  if (low.includes("arms around") || low.includes("autism") || low.includes("support group") || low.includes("pet therapy")) return "💜";
+  if (low.includes("plant") || low.includes("herbal")) return "🪴";
+  if (low.includes("tax")) return "📝";
+  if (low.includes("library") || low.includes("storytime")) return "📚";
+  return "✨";
 }
 
 function FreeFoodTab({ activeFilter }) {
@@ -312,29 +288,115 @@ function NeighborhoodTab() {
 
 function MayEventsTab({ activeFilter }) {
   const events = [
-    { d: "May 1", items: ["9:00 AM: Closed May 1 Fridge and Pantry in Swannanoa - Swannanoa Communities Together, 2121 US-70 — FREE", "12:00 PM: Free Food Truck Asheville from YWAM, Aston Street & South Lexington Avenue — FREE", "3:00 PM: May Day Community Feast Trinity UMC Asheville, 587 Haywood Rd — FREE", "3:00 PM: May Day Community Feast 12 Baskets, 610 Haywood Rd — FREE", "3:00 PM: May Day Community Free Feast in Arden, 132 State Rd 3174 — FREE", "4:00 PM: May Day Feast Unitarian Universalist AVL, 1 Edwin Pl — FREE", "4:00 PM: May Day Free Feast at Dr. Wesley Grant Senior Center, 285 Livingston St — FREE", "4:00 PM: May Day Feast at Shiloh Friendship Community Center, 99 New Leicester Hwy — FREE", "5:00 PM: May Day Feast MLK Jr Park AVL, 50 Martin Luther King Jr Dr — FREE", "7:00 PM: Community Engagement Market @ Fairview Public Library 3PM — FREE", "7:00 PM: Manna Market - Fairview, 1 Taylor Rd — FREE", "9am–4pm: Tax Help by appt, Pack Library (Downtown)", "11–11:45am: Tiny Tots Yoga, West AVL Library — FREE"] },
-    { d: "May 2", items: ["11:00 AM: Free dental day — Zoë Dental's 13th Annual Servants of Smiles, 10A Yorkshire St Suite 110 — FREE", "5:00 PM: Cat Pantry and Donation Drive, 841 Haywood Rd — FREE", "11am: Golden Years Treasure Hunt (50+), Memorial Stadium — FREE", "6–7:30pm: Kids Fishing Club, Lake Julian — FREE"] },
-    { d: "May 4", items: ["10:00 AM: Move Out Sale — Free Stuff left behind by college students, 102 Upper College Rd — FREE", "8:30 PM: Manna Market - Swannanoa, 71 Riverwood Rd — FREE", "10am–1pm: Plant Pass-A-Long, Francine Delaney School — FREE", "12pm: Tool Library Open House — FREE"] },
-    { d: "May 5", items: ["3:00 PM: Fresh Produce Market - Fairview, 26 Joe Jenkins Rd — FREE", "5:00 PM: YMCA Mobile Market - Mills River, 124 Town Center Dr — FREE", "5:30 PM: Manna Market - Topton, 71 Old School Rd — FREE", "8:30 PM: Community Engagement Market @ Enka Middle School 4:30PM — FREE", "8:30 PM: Manna Market - Candler, 390 Asbury Rd — FREE", "9:30 PM: Free Pilates Virtual and In Person, 67 Haywood St — FREE"] },
-    { d: "May 6", items: ["2:00 PM: Manna Market - Bryson City, 60 Almond School Rd — FREE", "3:00 PM: YMCA Mobile Market - Candler, 31 Westridge Market Pl — FREE", "4:00 PM: Free Acupuncture for BIPOC, 411 N Louisiana Ave — FREE", "5:00 PM: YMCA Mobile Market - Marshall, 258 Carolina Ln — FREE", "5:30 PM: Feed The People Free Dinner Asheville, Corner of Oakwood St & Haywood Rd — FREE", "7:00 PM: Community Engagement Market @ Aston Park Apartments 3PM — FREE", "7:00 PM: Manna Market - Asheville, 165 S French Broad Ave — FREE"] },
-    { d: "May 7", items: ["3:00 PM: YMCA Mobile Market - Swannanoa, 101 W Charleston Ave — FREE", "5:30 PM: Manna Market - Cherokee, 777 Casino Drive — FREE"] },
-    { d: "May 8", items: ["4:00 PM: Community Engagement Market @ Grove Street Community Center 12PM — FREE", "4:00 PM: Manna Market - Asheville, 36 Grove St — FREE", "4:00 PM: YMCA Mobile Market - Clyde, 15 Facility Dr — FREE", "Movie Night: Hidden Figures, East AVL Library — FREE"] },
-    { d: "May 11", items: ["4:00 PM: Manna Market - Spruce Pine, 53 Pine Grove Rd — FREE", "7:00 PM: Community Engagement Market @ Maple Crest Apartments at Lee Walker 3PM — FREE", "7:00 PM: Manna Market - Asheville, 20 Lee Garden Ln — FREE", "9:00 PM: Community Engagement Market @ Erwin Middle School 5PM — FREE", "9:00 PM: Manna Market - Asheville, 20 Erwin Hills Rd — FREE"] },
-    { d: "May 12", items: ["5:00 PM: Community Engagement Market @ Big Ivy Community Center 1PM — FREE", "6:30 PM: Community Engagement Market @ Bartlett Arms Apartment 2:30PM — FREE", "6:30 PM: Manna Market - Asheville, 121 Bartlett St — FREE", "7:00 PM: Manna Market - Woodfin, 199 Elkwood Ave — FREE"] },
-    { d: "May 13", items: ["2:00 PM: Manna Market - Burnsville, 71 Newdale Church Rd — FREE", "5:00 PM: Community Engagement Market @ Pisgah View Apartments 1PM — FREE", "5:00 PM: Manna Market - Asheville, 1 Granada St — FREE"] },
-    { d: "May 14", items: ["3:30 PM: Manna Market - Spruce Pine, 431 Oak Avenue — FREE", "5:00 PM: YMCA Mobile Market - Marion, 900 Baldwin Ave — FREE"] },
-    { d: "May 15", items: ["4:00 PM: YMCA Mobile Market - Asheville, 10 Coleys Circle — FREE"] },
-    { d: "May 16", items: ["2:00 PM: Herbal Plant Start Giveaway, 133 Livingston St — FREE", "4:00 PM: Community Baby Shower Burnsville, 503 Medical Campus Dr — FREE", "5:00 PM: Clothing Swap Sweeten Creek Brewing, 1127 Sweeten Creek Rd — FREE"] },
-    { d: "May 18", items: ["10:00 AM: Homeschool Takeover: National Museum Day, AMOS", "9:00 AM: Healthy Aging Day, YMCA Marion", "7:00 PM: Community Engagement Market @ Deaverview Apartments 3PM — FREE", "7:00 PM: Manna Market - Asheville, 275 Deaverview Rd — FREE", "7:30 PM: Manna Market - Asheville, 1984 Hendersonville Rd — FREE", "11am–1pm: Children's Clothing Swap, 27 Balm Grove (West AVL) — FREE!", "1–4pm: Truck City AVL (Quiet Hour 1–2!), Tanger Outlets — FREE"] },
-    { d: "May 19", items: ["5:00 PM: Community Engagement Market @ Big Ivy Community Center 1PM — FREE", "5:00 PM: YMCA Mobile Market - Mills River, 124 Town Center Dr — FREE"] },
-    { d: "May 20", items: ["3:30 PM: Manna Market - Murphy, 7829 NC-294 — FREE", "5:00 PM: YMCA Mobile Market - Marshall, 258 Carolina Ln — FREE", "7:00 PM: Community Engagement Market @ Shiloh Community Market 3PM — FREE", "7:00 PM: Manna Market - Asheville, 486 Caribou Rd — FREE"] },
-    { d: "May 21", items: ["3:00 PM: YMCA Mobile Market - Asheville, 150 Tunnel Rd — FREE", "3:30 PM: Manna Market - Cherokee, 27 Long Branch Road — FREE", "6:00 PM: YMCA Mobile Market - Asheville, 40 N Merrimon Ave — FREE", "6:30 PM: Community Engagement Market @ Klondyke Homes 2:30PM — FREE", "6:30 PM: Manna Market - Asheville, 500 Montford Ave — FREE"] },
-    { d: "May 22", items: ["4:00 PM: YMCA Mobile Market - Clyde, 15 Facility Dr — FREE", "6:00 PM: Community Engagement Market @ ABCCM-West 2PM — FREE", "6:00 PM: Manna Market - Candler, 1914 Smokey Park Hwy — FREE"] },
-    { d: "May 25", items: ["5:30 PM: Manna Market - Franklin, 1436 Georgia Rd — FREE", "7:00 PM: Community Engagement Market @ Grant Center 3PM — FREE", "7:00 PM: Manna Market - Asheville, 133 Livingston St — FREE"] },
-    { d: "May 26", items: ["11:00 AM: YMCA Outdoor Functional Fitness Zone Ribbon Cutting, Asheville YMCA", "5:00 PM: Community Engagement Market @ Big Ivy Community Center 1PM — FREE", "5:00 PM: YMCA Mobile Market - Hendersonville, 8106 Ave W — FREE", "6:30 PM: Community Engagement Market @ Bartlett Arms Apartment 2:30PM — FREE", "7:00 PM: Manna Market - Asheville, 121 Bartlett St — FREE"] },
-    { d: "May 27", items: ["3:00 PM: Manna Market - Asheville, 71 Fernihurst Drive — FREE", "3:00 PM: YMCA Mobile Market - Candler, 31 Westridge Market Pl — FREE", "5:00 PM: Community Engagement Market @ Pisgah View Apartments 1PM — FREE", "5:00 PM: YMCA Mobile Market - Leicester, 1561 Alexander Rd — FREE", "5:00 PM: Manna Market - Asheville, 1 Granada St — FREE"] },
-    { d: "May 28", items: ["2:30 PM: YMCA Mobile Market - Old Fort, 909 E Main St — FREE", "7:30 PM: Manna Market - Marion, 201 Ridley St — FREE", "Make & Munch: Paper Flowers + food, East AVL Library — FREE"] },
-    { d: "May 31", items: ["4:00 PM: Emote Clothing Swap — Mask required, 444 Haywood Rd — FREE"] },
+    { d: "May 1", items: [
+      { t: "12pm · YWAM Free Food Truck — Aston St & S Lexington Ave", l: "https://ywamasheville.org" },
+      { t: "3pm · May Day Feast at 12 Baskets, 610 Haywood Rd", l: "https://www.ashevillepovertyinitiative.org/" },
+      { t: "3pm · Manna Market – Fairview, 1 Taylor Rd", l: MANNA_URL },
+    ]},
+    { d: "May 2", items: [
+      { t: "11am · Servants of Smiles Free Dental Day — Zoë Dental, 10A Yorkshire St Suite 110", l: "https://www.zoedental.com/" },
+    ]},
+    { d: "May 4", items: [
+      { t: "Manna Market – Swannanoa, 71 Riverwood Rd", l: MANNA_URL },
+    ]},
+    { d: "May 5", items: [
+      { t: "5pm · YMCA Mobile Market – Mills River, 124 Town Center Dr", l: YMCA_URL },
+      { t: "5:30pm · Manna Market – Topton, 71 Old School Rd", l: MANNA_URL },
+      { t: "4:30pm · Manna Market – Candler, 390 Asbury Rd", l: MANNA_URL },
+    ]},
+    { d: "May 6", items: [
+      { t: "2pm · Manna Market – Bryson City, 60 Almond School Rd", l: MANNA_URL },
+      { t: "3pm · YMCA Mobile Market – Candler, 31 Westridge Market Pl", l: YMCA_URL },
+      { t: "5pm · YMCA Mobile Market – Marshall, 258 Carolina Ln", l: YMCA_URL },
+      { t: "3pm · Manna Market – Asheville, 165 S French Broad Ave", l: MANNA_URL },
+      { t: "5:30pm · Feed The People Free Dinner — Oakwood St & Haywood Rd", l: "https://www.facebook.com/FeedThePeopleAVL/" },
+    ]},
+    { d: "May 7", items: [
+      { t: "3pm · YMCA Mobile Market – Swannanoa, 101 W Charleston Ave", l: YMCA_URL },
+      { t: "5:30pm · Manna Market – Cherokee, 777 Casino Drive", l: MANNA_URL },
+    ]},
+    { d: "May 8", items: [
+      { t: "12pm · Manna Market – Asheville, 36 Grove St", l: MANNA_URL },
+      { t: "4pm · YMCA Mobile Market – Clyde, 15 Facility Dr", l: YMCA_URL },
+      { t: "Movie Night: Hidden Figures — East AVL Library", l: LIB_URL },
+    ]},
+    { d: "May 11", items: [
+      { t: "4pm · Manna Market – Spruce Pine, 53 Pine Grove Rd", l: MANNA_URL },
+      { t: "3pm · Manna Market – Asheville (Lee Walker), 20 Lee Garden Ln", l: MANNA_URL },
+      { t: "5pm · Manna Market – Asheville (Erwin Hills), 20 Erwin Hills Rd", l: MANNA_URL },
+    ]},
+    { d: "May 12", items: [
+      { t: "1pm · Manna Market – Big Ivy Community Center", l: MANNA_URL },
+      { t: "2:30pm · Manna Market – Asheville (Bartlett Arms), 121 Bartlett St", l: MANNA_URL },
+      { t: "Manna Market – Woodfin, 199 Elkwood Ave", l: MANNA_URL },
+    ]},
+    { d: "May 13", items: [
+      { t: "2pm · Manna Market – Burnsville, 71 Newdale Church Rd", l: MANNA_URL },
+      { t: "1pm · Manna Market – Asheville (Pisgah View), 1 Granada St", l: MANNA_URL },
+    ]},
+    { d: "May 14", items: [
+      { t: "3:30pm · Manna Market – Spruce Pine, 431 Oak Ave", l: MANNA_URL },
+      { t: "5pm · YMCA Mobile Market – Marion, 900 Baldwin Ave", l: YMCA_URL },
+      { t: "12:15pm · POUND® Fitness — Arms Around ASD", l: ARMS_URL },
+      { t: "1:30pm · Mindfulness with Andrew — Arms Around ASD", l: ARMS_URL },
+      { t: "2pm · Gentle Stretching with Ellen — Arms Around ASD", l: ARMS_URL },
+    ]},
+    { d: "May 15", items: [
+      { t: "4pm · YMCA Mobile Market – Asheville, 10 Coleys Circle", l: YMCA_URL },
+      { t: "11:30am · Davis's Dance Party — Arms Around ASD", l: ARMS_URL },
+      { t: "12:30pm · Late-Identified Women's Support Group — Arms Around ASD", l: ARMS_URL },
+      { t: "1pm · Pet Therapy with Deputy Brody — Arms Around ASD", l: ARMS_URL },
+      { t: "2pm · Art with Jenna O — Arms Around ASD", l: ARMS_URL },
+      { t: "4pm · Video Games with Lili — Arms Around ASD", l: ARMS_URL },
+      { t: "5:30pm · Friday Night at the Movies — Arms Around ASD", l: ARMS_URL },
+    ]},
+    { d: "May 16", items: [
+      { t: "2pm · Free Herbal Plant Starts — BeLoved Asheville, 133 Livingston St", l: "https://www.belovedasheville.com/" },
+    ]},
+    { d: "May 18", items: [
+      { t: "Homeschool Takeover: National Museum Day — AMOS", l: "https://ashevillemuseum.org/" },
+      { t: "3pm · Manna Market – Asheville (Deaverview), 275 Deaverview Rd", l: MANNA_URL },
+      { t: "Manna Market – Asheville, 1984 Hendersonville Rd", l: MANNA_URL },
+    ]},
+    { d: "May 19", items: [
+      { t: "1pm · Manna Market – Big Ivy Community Center", l: MANNA_URL },
+      { t: "5pm · YMCA Mobile Market – Mills River, 124 Town Center Dr", l: YMCA_URL },
+    ]},
+    { d: "May 20", items: [
+      { t: "3:30pm · Manna Market – Murphy, 7829 NC-294", l: MANNA_URL },
+      { t: "5pm · YMCA Mobile Market – Marshall, 258 Carolina Ln", l: YMCA_URL },
+      { t: "3pm · Manna Market – Asheville (Shiloh), 486 Caribou Rd", l: MANNA_URL },
+    ]},
+    { d: "May 21", items: [
+      { t: "3pm · YMCA Mobile Market – Asheville, 150 Tunnel Rd", l: YMCA_URL },
+      { t: "6pm · YMCA Mobile Market – Asheville, 40 N Merrimon Ave", l: YMCA_URL },
+      { t: "3:30pm · Manna Market – Cherokee, 27 Long Branch Rd", l: MANNA_URL },
+      { t: "2:30pm · Manna Market – Asheville (Klondyke), 500 Montford Ave", l: MANNA_URL },
+    ]},
+    { d: "May 22", items: [
+      { t: "4pm · YMCA Mobile Market – Clyde, 15 Facility Dr", l: YMCA_URL },
+      { t: "2pm · Manna Market – Candler (ABCCM-West), 1914 Smokey Park Hwy", l: MANNA_URL },
+    ]},
+    { d: "May 25", items: [
+      { t: "5:30pm · Manna Market – Franklin, 1436 Georgia Rd", l: MANNA_URL },
+      { t: "3pm · Manna Market – Asheville (Grant Center), 133 Livingston St", l: MANNA_URL },
+    ]},
+    { d: "May 26", items: [
+      { t: "5pm · YMCA Mobile Market – Hendersonville, 8106 Ave W", l: YMCA_URL },
+      { t: "1pm · Manna Market – Big Ivy Community Center", l: MANNA_URL },
+      { t: "2:30pm · Manna Market – Asheville (Bartlett Arms), 121 Bartlett St", l: MANNA_URL },
+    ]},
+    { d: "May 27", items: [
+      { t: "3pm · YMCA Mobile Market – Candler, 31 Westridge Market Pl", l: YMCA_URL },
+      { t: "5pm · YMCA Mobile Market – Leicester, 1561 Alexander Rd", l: YMCA_URL },
+      { t: "Manna Market – Asheville (Fernihurst), 71 Fernihurst Dr", l: MANNA_URL },
+      { t: "1pm · Manna Market – Asheville (Pisgah View), 1 Granada St", l: MANNA_URL },
+    ]},
+    { d: "May 28", items: [
+      { t: "2:30pm · YMCA Mobile Market – Old Fort, 909 E Main St", l: YMCA_URL },
+      { t: "Manna Market – Marion, 201 Ridley St", l: MANNA_URL },
+      { t: "Make & Munch: Paper Flowers + snacks — East AVL Library", l: LIB_URL },
+    ]},
   ];
 
   const today = new Date();
@@ -351,12 +413,12 @@ function MayEventsTab({ activeFilter }) {
 
   const filterFn = (item) => {
     if (activeFilter === "all") return true;
-    const low = item.toLowerCase();
-    if (activeFilter === "free") return low.includes("free");
-    if (activeFilter === "food") return low.includes("food") || low.includes("market") || low.includes("produce") || low.includes("manna") || low.includes("feast") || low.includes("pantry");
-    if (activeFilter === "kids") return low.includes("kid") || low.includes("baby") || low.includes("tot") || low.includes("youth") || low.includes("children") || low.includes("fishing club");
+    const low = item.t.toLowerCase();
+    if (activeFilter === "free") return true;
+    if (activeFilter === "food") return low.includes("market") || low.includes("manna") || low.includes("ymca") || low.includes("feast") || low.includes("feed") || low.includes("ywam") || low.includes("munch");
+    if (activeFilter === "kids") return low.includes("kid") || low.includes("baby") || low.includes("tot") || low.includes("youth") || low.includes("children") || low.includes("homeschool") || low.includes("dance party") || low.includes("art with") || low.includes("video game");
     if (activeFilter === "bilingual") return low.includes("spanish") || low.includes("bilingual") || low.includes("cuento");
-    if (activeFilter === "sensory") return low.includes("sensory") || low.includes("quiet");
+    if (activeFilter === "sensory") return low.includes("arms around") || low.includes("autism") || low.includes("sensory") || low.includes("quiet") || low.includes("support group") || low.includes("pet therapy") || low.includes("mindfulness");
     return true;
   };
 
@@ -377,14 +439,14 @@ function MayEventsTab({ activeFilter }) {
     if (showRecurring) {
       const foodObj = WEEKLY_FOOD.find(w => w.day === dayOfWeek);
       if (foodObj) {
-        dayEvents = dayEvents.concat(foodObj.items.map(i => `${i.t}: ${i.n} @ ${i.l} — FREE`));
+        dayEvents = dayEvents.concat(foodObj.items.map(i => ({ t: `${i.t} · ${i.n} @ ${i.l}`, l: i.link || "" })));
       }
       const libObj = WEEKLY_LIBRARY.find(w => w.fullDay === dayOfWeek);
       if (libObj) {
-        dayEvents = dayEvents.concat(libObj.items.map(i => `${i.n} (${i.t}) @ ${i.l} — FREE`));
+        dayEvents = dayEvents.concat(libObj.items.map(i => ({ t: `${i.n} (${i.t}) @ ${i.l}`, l: LIB_URL })));
       }
       if (dayOfWeek === "Friday") {
-        dayEvents.push("12:00 PM: Free Food Truck Asheville from YWAM, Aston Street & South Lexington Avenue — FREE");
+        dayEvents.push({ t: "12pm · YWAM Free Food Truck — Aston St & S Lexington Ave", l: "https://ywamasheville.org" });
       }
     }
 
@@ -401,9 +463,9 @@ function MayEventsTab({ activeFilter }) {
       </div>
 
       <label className="flex items-center gap-2.5 bg-white px-4 py-3 rounded-xl shadow-sm border border-violet-100 mb-6 cursor-pointer select-none active:bg-gray-50 transition-colors">
-        <input 
-          type="checkbox" 
-          checked={showRecurring} 
+        <input
+          type="checkbox"
+          checked={showRecurring}
           onChange={(e) => setShowRecurring(e.target.checked)}
           className="w-5 h-5 rounded border-violet-300 text-violet-600 focus:ring-violet-500 shrink-0"
         />
@@ -414,21 +476,16 @@ function MayEventsTab({ activeFilter }) {
         <div key={i} className="mb-4 bg-white p-4 rounded-xl shadow-sm">
           <h3 className="font-black text-sm bg-violet-100 text-violet-800 rounded-lg px-3 py-1.5 inline-block mb-3">{ev.d}</h3>
           <div className="space-y-2">
-            {ev.items.map((item, j) => {
-              const meta = getEventMeta(item);
-              return (
-                <div key={j} className="text-sm text-gray-700 leading-relaxed flex gap-2 items-start border-b border-gray-50 pb-2 last:border-0 last:pb-0">
-                  <span className="shrink-0 mt-0.5 text-base">{meta.emoji}</span>
-                  <span className="flex-1 break-words">{item}</span>
-                  {meta.link && (
-                    <a href={meta.link.url} target="_blank" rel="noopener noreferrer"
-                       className="shrink-0 text-[#c06030] font-bold underline decoration-dotted underline-offset-2 hover:decoration-solid mt-0.5 whitespace-nowrap">
-                       {meta.link.text} ↗
-                    </a>
-                  )}
-                </div>
-              );
-            })}
+            {ev.items.map((item, j) => (
+              <div key={j} className="text-sm text-gray-700 leading-relaxed flex gap-2 items-start border-b border-gray-50 pb-2 last:border-0 last:pb-0">
+                <span className="shrink-0 mt-0.5 text-base">{getEventEmoji(item.t)}</span>
+                <span className="flex-1 break-words">
+                  {item.l
+                    ? <a href={item.l} target="_blank" rel="noopener noreferrer" className={`text-[#c06030] ${linkStyle}`}>{item.t} ↗</a>
+                    : item.t}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       ))}
