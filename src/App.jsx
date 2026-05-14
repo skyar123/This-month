@@ -176,6 +176,15 @@ function FreeFoodTab({ activeFilter }) {
 function KidsTab() {
   const libCalUrl = "https://buncombe.librarycalendar.com/events/upcoming?age_groups%5B1%5D=1&age_groups%5B2%5D=2&age_groups%5B90%5D=90&age_groups%5B91%5D=91&age_groups%5B5%5D=5";
 
+  return (
+    <div>
+      <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-5 mb-6 border border-pink-200">
+        <p className="text-base font-medium text-gray-800">Programs for babies, toddlers, preschoolers, and school-age kiddos. 🧸</p>
+      </div>
+
+      <SectionHeader emoji="📚">Weekly Library Programs</SectionHeader>
+      <p className="text-xs text-gray-500 mb-3">All programs free · <LinkOut href={libCalUrl}>See full library calendar ↗</LinkOut></p>
+
       {WEEKLY_LIBRARY.map(({ day, items }) => (
         <div key={day} className="mb-4">
           <h3 className="font-black text-sm uppercase tracking-widest text-purple-600 mb-2 border-b border-purple-100 pb-1">{day}</h3>
@@ -194,28 +203,32 @@ function KidsTab() {
         </div>
       ))}
 
-      <SectionHeader emoji="🍼">Baby Gear & Hygiene Resources</SectionHeader>
+      <>
+        <SectionHeader emoji="🍼">Baby Gear & Hygiene Resources</SectionHeader>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
-        <ul className="text-sm space-y-3">
-          <li>
-            <strong><LinkOut href="https://givenscommunities.org/wp-content/uploads/2022/05/GC-BEAR_Closets.pdf">BEAR Closets</LinkOut> (Free Clothes, Toys, Baby Gear):</strong><br />
-            ▸ <em>Abernethy UMC (Asheville):</em> 1st/3rd Wed 10am–2pm<br />
-            ▸ <em>St. Pauls UMC (Asheville):</em> 2nd/4th Wed 4pm–6pm<br />
-            ▸ <em>Snow Hill UMC (Candler):</em> Tue 1pm–5pm<br />
-            ▸ <em>Loving Hearts (Marion):</em> Wed 12pm–3pm
-          </li>
-          <li className="pt-2 border-t border-gray-100">
-            <strong><LinkOut href="https://www.buncombenc.gov/457/Register-of-Deeds">Register of Deeds</LinkOut> (Downtown Asheville):</strong> Free Diapers & Formula · Mon–Fri 8am–5pm
-          </li>
-        </ul>
-      </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+          <ul className="text-sm space-y-3">
+            <li>
+              <strong><LinkOut href="https://givenscommunities.org/wp-content/uploads/2022/05/GC-BEAR_Closets.pdf">BEAR Closets</LinkOut> (Free Clothes, Toys, Baby Gear):</strong><br />
+              ▸ <em>Abernethy UMC (Asheville):</em> 1st/3rd Wed 10am–2pm<br />
+              ▸ <em>St. Pauls UMC (Asheville):</em> 2nd/4th Wed 4pm–6pm<br />
+              ▸ <em>Snow Hill UMC (Candler):</em> Tue 1pm–5pm<br />
+              ▸ <em>Loving Hearts (Marion):</em> Tue 12pm–4pm · Wed 11am–3pm · ages 0–15
+            </li>
+            <li className="pt-2 border-t border-gray-100">
+              <strong><LinkOut href="https://www.buncombenc.gov/457/Register-of-Deeds">Register of Deeds</LinkOut> (Downtown Asheville):</strong> Free Diapers & Formula · Mon–Fri 8am–5pm
+            </li>
+          </ul>
+        </div>
+      </>
 
-      <SectionHeader emoji="🐾">Free Pet Pantries</SectionHeader>
-      <Card title="Don't let your furry friends go hungry" accent="border-l-rose-500" icon="🐶">
-        <p>Free pet food available at <LinkOut href="https://www.abccm.org/">ABCCM</LinkOut> (24 Cumberland Ave), <LinkOut href="https://www.ashevillepovertyinitiative.org/">12 Baskets</LinkOut> (610 Haywood Rd), and <LinkOut href="https://www.haywoodstreet.org/">Haywood Street Congregation</LinkOut>.</p>
-        <p className="mt-2 text-xs">See <LinkOut href="http://tiny.cc/freeinwnc">tiny.cc/freeinwnc</LinkOut> for a full list of 20+ locations!</p>
-      </Card>
+      <>
+        <SectionHeader emoji="🐾">Free Pet Pantries</SectionHeader>
+        <Card title="Don't let your furry friends go hungry" accent="border-l-rose-500" icon="🐶">
+          <p>Free pet food available at <LinkOut href="https://www.abccm.org/">ABCCM</LinkOut> (24 Cumberland Ave), <LinkOut href="https://www.ashevillepovertyinitiative.org/">12 Baskets</LinkOut> (610 Haywood Rd), and <LinkOut href="https://www.haywoodstreet.org/">Haywood Street Congregation</LinkOut>.</p>
+          <p className="mt-2 text-xs">See <LinkOut href="http://tiny.cc/freeinwnc">tiny.cc/freeinwnc</LinkOut> for a full list of 20+ locations!</p>
+        </Card>
+      </>
     </div>
   );
 }
@@ -264,6 +277,19 @@ function NeighborhoodTab() {
     { name: "Bryson City (Swain Co.)", emoji: "🏡", items: [
       { n: "Restoration House Pantry", d: "Mon/Tue/Thu/Fri 10am–3pm · Wed 1–6pm", l: "81 Academy St", link: "https://www.restorationhousewnc.org/" },
       { n: "24/7 Blessing Box + Vending Machine", d: "Always open", l: "81 Academy St (outside)", link: "https://www.restorationhousewnc.org/" },
+    ]},
+    { name: "Marion / McDowell County", emoji: "🏞️", items: [
+      { n: "YMCA Mobile Market – East Marion", d: "2nd Thu · 5pm", l: "900 Baldwin Ave, Marion", link: "https://www.ymcawnc.org/programs/community/food-programs" },
+      { n: "YMCA Mobile Market – Old Fort", d: "Last Thu · 2:30pm", l: "909 E Main St, Old Fort", link: "https://www.ymcawnc.org/programs/community/food-programs" },
+      { n: "Feed the People (free food)", d: "Thu 12–3pm", l: "4231 US-221, Marion", link: "" },
+      { n: "New Hope McDowell (free food)", d: "Wednesdays", l: "1085 Baldwin Ave, Marion", link: "" },
+      { n: "Love Box (24/7 free pantry)", d: "Always open", l: "900 Baldwin Ave & 151 Ridge Rd, Marion", link: "" },
+      { n: "Marion Tailgate Market (SNAP/EBT accepted)", d: "Saturdays", l: "Downtown Marion", link: "" },
+      { n: "Loving Hearts BEAR Closet (clothes & gear, ages 0–15)", d: "Tue 12–4pm · Wed 11am–3pm", l: "337 Garden Creek Rd, Marion", link: "https://givenscommunities.org/wp-content/uploads/2022/05/GC-BEAR_Closets.pdf" },
+      { n: "MATCH – Resource Navigator & FoodBox Delivery", d: "Weekdays · 📞 828-659-5289", l: "430 Rankin Dr, Marion", link: "" },
+      { n: "McDowell Transit (free rides to appointments)", d: "Call ahead · 📞 828-559-0744", l: "Marion", link: "" },
+      { n: "CULA (bilingual services & resources)", d: "Weekdays", l: "79 Academy St, Marion", link: "" },
+      { n: "McDowell Public Library", d: "Mon–Sat", l: "90 W Court St, Marion", link: "" },
     ]},
   ];
 
