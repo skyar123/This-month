@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const TABS = ["📅 May Events", "🍽️ Food & Basics", "👶 Kids & Families", "🏘️ Neighborhoods"];
+const TABS = ["📅 Events", "🍽️ Food & Basics", "👶 Kids & Families", "🏘️ Neighborhoods"];
 
 const WEEKLY_FOOD = [
   { day: "Monday", items: [ { t: "12:30–2pm", n: "Bounty & Soul Farmers Market Truck", l: "Beacon Village, Swannanoa", link: "https://www.bountyandsoul.org/" } ] },
@@ -20,13 +20,214 @@ const WEEKLY_LIBRARY = [
   { day: "Sat", fullDay: "Saturday", items: [ { n: "Family Storytime", t: "9:30am", l: "East Asheville" }, { n: "LEGO Club", t: "10am", l: "Oakley/South Asheville" }, { n: "Family Story Time", t: "10:30am", l: "West Asheville" }, { n: "Hora del cuento 🇪🇸", t: "10:30am", l: "North Asheville" } ] },
 ];
 
+// ── Upcoming dated events ─────────────────────────────────────────────────────
+const UPCOMING_EVENTS = [
+  { d: "May 29", items: [
+    { t: "All weekend (May 29–31) · Connect Beyond Festival · The Orange Peel, Asheville", l: "https://www.connectbeyondfestival.com" },
+  ]},
+  { d: "May 30", items: [
+    { t: "9 AM · Lucerne Park Yard Sale · Lucerne Park, Asheville", l: "https://www.facebook.com/events/841212705151220/" },
+    { t: "10 AM · Lavender Season Begins! · 2951 Chimney Rock Rd, Hendersonville, NC (Lindy, Ellie & Melanie interested)", l: "https://www.facebook.com/events/1900786267226845/" },
+    { t: "11 AM · Turkish Food Festival-Spring '26 · 300 S Main St, Greenville, SC", l: "https://www.facebook.com/events/1996383871091029/" },
+    { t: "6 PM · Sippin' in Simpsonville Summer Beer Tasting · Downtown Simpsonville", l: "https://www.facebook.com/events/1492519205769464/" },
+    { t: "6:30 PM doors, 7 PM show · Resound Community Choir Spring Concert · First Congregational UCC, 20 Oak St, Asheville", l: "https://ticketstripe.com/resoundspringconcert2026" },
+    { t: "7:30 PM · The Wonderful Wizard of Oz · Hazel Robinson Amphitheatre, 92 Gay St, Asheville", l: "https://www.facebook.com/events/1476408380677634/" },
+  ]},
+  { d: "May 31", items: [
+    { t: "10 AM · Uncommon Market Asheville · 1 Foundy St, Asheville", l: "https://www.facebook.com/events/3881942205441026/" },
+    { t: "11 AM · Sunday Sound Meditation with Himalayan Bowls · 157 S Lexington Ave, Asheville", l: "https://www.facebook.com/events/1248499266930414/" },
+    { t: "1 PM · Rhododendron Ramble (final day) · Grandfather Mountain — free 30-min guided strolls", l: "https://www.romanticasheville.com/listing/events/rhododendron-ramble.htm" },
+  ]},
+  { d: "Jun 1", items: [
+    { t: "Mon–Fri (Jun 1–5) · Recovery Coach Academy · AB Tech Ferguson Building, Asheville", l: "https://www.facebook.com/events/1504099784395982/" },
+  ]},
+  { d: "Jun 3", items: [
+    { t: "Housing Recovery Board (Hybrid) · City of Asheville", l: "https://www.ashevillenc.gov/event/housing-recovery-board-hybrid-4/" },
+    { t: "Rescheduled: Planning and Zoning Commission (In-Person) · City of Asheville", l: "https://www.ashevillenc.gov/event/planning-and-zoning-commission-in-person-6/" },
+    { t: "8 PM · Tank and The Bangas: The Last Balloon Tour · The Grey Eagle, Asheville", l: "https://www.facebook.com/events/925085423496844/" },
+  ]},
+  { d: "Jun 4", items: [
+    { t: "City Council Agenda Briefing (Virtual)", l: "https://www.ashevillenc.gov/event/city-council-agenda-briefing-virtual-17/" },
+  ]},
+  { d: "Jun 5", items: [
+    { t: "FAB Fest Summer Dates begin — Fridays through Aug 7 · Food, Arts & Brews · Central St, Downtown Rutherfordton", l: "https://www.romanticasheville.com/listing/events/fab-fest-summer-dates.htm" },
+    { t: "Mountain Community Capital Fund Operating Committee (In-person) · City of Asheville", l: "https://www.ashevillenc.gov/event/mountain-community-capital-fund-operating-committee-in-person/" },
+    { t: "7 PM · Asheville Drag Bingo: Beach Bingo Fundraiser for the YWCA · Hilltop Event Center, 21 Restaurant Ct", l: "https://www.facebook.com/events/982305304327858/" },
+    { t: "7:30 PM · Othello · Hazel Robinson Amphitheatre, 92 Gay St, Asheville", l: "https://www.facebook.com/events/930534413321429/" },
+  ]},
+  { d: "Jun 6", items: [
+    { t: "9 AM · 35th Annual Antique & Vintage Show · Downtown Hendersonville, NC", l: "https://www.facebook.com/events/1662830191738675/" },
+    { t: "12 PM · Asheville Pickle Festival · Asheville Outlets", l: "https://www.facebook.com/events/1240019264753825/" },
+    { t: "5 PM · Dirty Soda & Lemonade with the Highland Cows · 4957 Old Stage Rd, Chuckey, TN", l: "https://www.facebook.com/events/1149101913843374/" },
+  ]},
+  { d: "Jun 7", items: [
+    { t: "11 AM · Three Year Anniversary Purrrty! · 841 Haywood Rd., Asheville", l: "https://www.facebook.com/events/2622647471484182/" },
+    { t: "12 PM · 5th Annual Asheville HoneyFest · Highland Brewing Company", l: "https://www.facebook.com/events/1422066559667516/" },
+    { t: "8 PM · The Deslondes · The Grey Eagle, Asheville", l: "https://www.facebook.com/events/1714369526214778/" },
+  ]},
+  { d: "Jun 8", items: [
+    { t: "Shiloh Community Association Meeting · City of Asheville", l: "https://www.ashevillenc.gov/event/shiloh-community-association-meeting/" },
+  ]},
+  { d: "Jun 9", items: [
+    { t: "City Council Meeting (In-Person)", l: "https://www.ashevillenc.gov/event/city-council-meeting-in-person-8/" },
+  ]},
+  { d: "Jun 10", items: [
+    { t: "Historic Resources Commission (In-Person)", l: "https://www.ashevillenc.gov/event/historic-resources-commission-in-person-12/" },
+  ]},
+  { d: "Jun 11", items: [
+    { t: "7 PM · Nerd Nite June · River Arts District Brewing Company, Asheville", l: "https://www.facebook.com/events/2102375343657588/" },
+  ]},
+  { d: "Jun 12", items: [
+    { t: "Movies in the Park · City of Asheville", l: "https://www.ashevillenc.gov/event/movies-in-the-park-2/" },
+  ]},
+  { d: "Jun 13", items: [
+    { t: "8 AM–10 PM · GRINDFest AVL (FREE) · Pack Square Park — celebrating Black business & entrepreneurship, live music, vendors", l: "https://www.romanticasheville.com/listing/events/grindfest-avl.htm" },
+    { t: "2 PM · SONG-O with Divine: Benefiting Youth OUTright · 131 Sweeten Creek Rd, Ste. 10, Asheville", l: "https://www.facebook.com/events/978781921561451/" },
+    { t: "Jun 13–Oct 4 · Sapphire Valley Arts and Crafts Show (pottery, textiles, woodwork, live music)", l: "https://www.romanticasheville.com/listing/events/sapphire-valley-arts-and-crafts-show.htm" },
+  ]},
+  { d: "Jun 16", items: [
+    { t: "Historic Resources Commission Executive Committee (Virtual)", l: "https://www.ashevillenc.gov/event/historic-resources-commission-executive-committee-virtual-5/" },
+    { t: "Housing and Community Development Committee (Virtual)", l: "https://www.ashevillenc.gov/event/housing-and-community-development-committee-virtual-14/" },
+    { t: "Planning, Economic Development and Environment Committee (Virtual)", l: "https://www.ashevillenc.gov/event/planning-economic-development-and-environment-committee-virtual-14/" },
+    { t: "Burton St Community Association Monthly Meeting", l: "https://www.ashevillenc.gov/event/burton-st-community-association-monthly-meeting-6/" },
+  ]},
+  { d: "Jun 18", items: [
+    { t: "City Council Agenda Briefing (Virtual)", l: "https://www.ashevillenc.gov/event/city-council-agenda-briefing-virtual-18/" },
+    { t: "Design Review Committee (In-Person)", l: "https://www.ashevillenc.gov/event/design-review-committee-in-person-11/" },
+  ]},
+  { d: "Jun 19", items: [
+    { t: "7 PM · Josh Johnson's Comedy Band Camp · Harrah's Cherokee Center, Asheville", l: "https://www.facebook.com/events/1621330085870973/" },
+  ]},
+  { d: "Jun 20", items: [
+    { t: "11 AM · Pride Drag Brunch Fundraiser for Blue Ridge Pride · Banks Ave, Asheville", l: "https://www.facebook.com/events/1992776904944945/" },
+  ]},
+  { d: "Jun 21", items: [
+    { t: "12 PM · Magical Market · 841 Haywood Rd., Asheville", l: "https://www.facebook.com/events/1463737018524096/" },
+  ]},
+  { d: "Jun 22", items: [
+    { t: "Board of Adjustment (In-Person)", l: "https://www.ashevillenc.gov/event/board-of-adjustment-in-person-13/" },
+  ]},
+  { d: "Jun 23", items: [
+    { t: "City Council Worksession on Policy, Finance & Infrastructure (In-Person)", l: "https://www.ashevillenc.gov/event/city-council-worksession-on-policy-finance-and-infrastructure-in-person-4/" },
+    { t: "City Council Meeting", l: "https://www.ashevillenc.gov/event/city-council-meeting-12/" },
+    { t: "Rescheduled: People & Environment Recovery Board Joint Meeting (In-Person)", l: "https://www.ashevillenc.gov/event/people-and-environment-recovery-board-hybrid-4/" },
+    { t: "Rescheduled: Infrastructure Recovery Board Joint Meeting (In-Person)", l: "https://www.ashevillenc.gov/event/infrastructure-recovery-board-hybrid-4/" },
+  ]},
+  { d: "Jun 25", items: [
+    { t: "Special Meeting: Urban Forestry Commission (In-Person)", l: "https://www.ashevillenc.gov/event/special-meeting-urban-forestry-commission-in-person-2/" },
+  ]},
+  { d: "Jun 27", items: [
+    { t: "10 PM · ANTHEM: Pride Dance Party · OHenrys Asheville", l: "https://www.facebook.com/events/1197114189099162/" },
+  ]},
+  { d: "Jul 1", items: [
+    { t: "Planning and Zoning Commission (In-Person)", l: "https://www.ashevillenc.gov/event/planning-and-zoning-commission-in-person-7/" },
+  ]},
+  { d: "Jul 2", items: [
+    { t: "Civil Service Board (In-Person)", l: "https://www.ashevillenc.gov/event/civil-service-board-in-person-8/" },
+  ]},
+  { d: "Jul 3", items: [
+    { t: "Mountain Community Capital Fund Operating Committee (In-person)", l: "https://www.ashevillenc.gov/event/mountain-community-capital-fund-operating-committee-in-person-2/" },
+  ]},
+  { d: "Jul 7", items: [
+    { t: "Board of Electrical Examiners (Virtual)", l: "https://www.ashevillenc.gov/event/board-of-electrical-examiners-virtual-4/" },
+  ]},
+  { d: "Jul 8", items: [
+    { t: "Historic Resources Commission (In-Person)", l: "https://www.ashevillenc.gov/event/historic-resources-commission-in-person-13/" },
+  ]},
+  { d: "Jul 10", items: [
+    { t: "3:30 PM · The Princess Concert · Thomas Wolfe Auditorium, Asheville", l: "https://www.facebook.com/events/2086366882202695/" },
+    { t: "5:30 PM · Dark Market Asheville: Summerween Horror Show · Hi-Wire Brewing RAD Beer Garden", l: "https://www.facebook.com/events/1604508890790302/" },
+    { t: "Movies in the Park", l: "https://www.ashevillenc.gov/event/movies-in-the-park-3/" },
+  ]},
+  { d: "Jul 11", items: [
+    { t: "Sat–Sun (Jul 11–12) · The Big Crafty · Harrah's Cherokee Center, Asheville", l: "https://www.facebook.com/events/1470931424400414/" },
+  ]},
+  { d: "Jul 16", items: [
+    { t: "Economy Recovery Board (Hybrid)", l: "https://www.ashevillenc.gov/event/economy-recovery-board-hybrid-5/" },
+    { t: "Design Review Committee (In-Person)", l: "https://www.ashevillenc.gov/event/design-review-committee-in-person-12/" },
+  ]},
+  { d: "Jul 21", items: [
+    { t: "Historic Resources Commission Executive Committee (Virtual)", l: "https://www.ashevillenc.gov/event/historic-resources-commission-executive-committee-virtual-7/" },
+    { t: "Housing and Community Development Committee (Virtual)", l: "https://www.ashevillenc.gov/event/housing-and-community-development-committee-virtual-15/" },
+    { t: "Planning, Economic Development and Environment Committee (Virtual)", l: "https://www.ashevillenc.gov/event/planning-economic-development-and-environment-committee-virtual-15/" },
+    { t: "Burton St Community Association Monthly Meeting", l: "https://www.ashevillenc.gov/event/burton-st-community-association-monthly-meeting-9/" },
+  ]},
+  { d: "Jul 23", items: [
+    { t: "City Council Agenda Briefing (Virtual)", l: "https://www.ashevillenc.gov/event/city-council-agenda-briefing-virtual-13/" },
+  ]},
+  { d: "Sep 7", items: [
+    { t: "Through Sep 7 · Art on the Greene · Banner Elk Historic School Grounds — 40–60 regional artists, ceramics, glass, paintings", l: "https://www.romanticasheville.com/listing/events/art-greene-banner-elk.htm" },
+  ]},
+  { d: "Sep 12", items: [
+    { t: "11:30 AM · 2nd Annual Renaissance Festival at MRB! · Mills River Brewing Co.", l: "https://www.facebook.com/events/1643740546769952/" },
+  ]},
+  { d: "Sep 18", items: [
+    { t: "Fri–Sun (Sep 18–20) · Upstate Renaissance Faire · 2325 Hampton Rd, Wellford, SC", l: "https://www.facebook.com/events/25135502286142559/" },
+  ]},
+  { d: "Oct 3", items: [
+    { t: "11 AM · Greer Arts & Eats Festival · Downtown Greer (Krista, Melanie & Judi interested)", l: "https://www.facebook.com/events/1830570911663373/" },
+  ]},
+  { d: "Oct 4", items: [
+    { t: "Through Oct 4 · Sapphire Valley Arts and Crafts Show ends", l: "https://www.romanticasheville.com/listing/events/sapphire-valley-arts-and-crafts-show.htm" },
+  ]},
+  { d: "Oct 25", items: [
+    { t: "7 PM · Leanne Morgan: THE TIME OF OUR LIVES TOUR · Bon Secours Wellness Arena, Greenville, SC", l: "https://www.facebook.com/events/2160652654752140/" },
+  ]},
+  { d: "Nov 5", items: [
+    { t: "8 PM · Aaron Lee Tasjan w/ Madeleine Kelson · The Grey Eagle, Asheville", l: "https://www.facebook.com/events/840730165015876/" },
+  ]},
+  { d: "Nov 20", items: [
+    { t: "7 PM · Karen Peck and New River in Concert (FREE) · 219 Pendleton St, Pickens, SC", l: "https://www.facebook.com/events/2023308045067097/" },
+  ]},
+];
+
+// ── Browse-more events (dates TBD / no confirmed date) ──────────────────────
+const EXPLORE_MORE = [
+  { t: "Statemint Asheville's Spring Pop-up Consignment Event (Women & Men)", l: "https://www.facebook.com/events/932900056142735/" },
+  { t: "Asheville Movies in the Park 2026", l: "https://www.facebook.com/events/1241890931361132/" },
+  { t: "Asheville Veganfest — Spring", l: "https://www.facebook.com/events/1619772332620824/" },
+  { t: "Asheville Veganfest — Fall", l: "https://www.facebook.com/events/964962849230799/" },
+  { t: "2026 Asheville Spartan Event Weekend", l: "https://www.facebook.com/events/1013564927371254/" },
+  { t: "Asheville Book Signing & Fund Raising Event", l: "https://www.facebook.com/events/1491940986013829/" },
+  { t: "Golden Hour Yoga & Private Salt Cave", l: "https://www.facebook.com/events/995633426360007/" },
+  { t: "The Reset Event Hosted by First Fruits", l: "https://www.facebook.com/events/1242910767385307/" },
+  { t: "Sunset Dance Downtown w/ DJ Mikaya & Startribe", l: "https://www.facebook.com/events/2423665904770506/" },
+  { t: "MCAR at Asheville Humane Pop-Up Adoption Event", l: "https://www.facebook.com/events/27030249383252612/" },
+  { t: "Concerts on the Creek in Sylva ft. Tuxedo Junction", l: "https://www.facebook.com/events/1235835401695217/" },
+  { t: "ABSFest: Tarot for Fun & Profit Workshop with Madame Onça", l: "https://www.facebook.com/events/1336223651762712/" },
+  { t: "Brunch and Beats: 2026 Kickoff", l: "https://www.facebook.com/events/4413800502197451/" },
+  { t: "Soul Blue Rocks the Cork & Keg", l: "https://www.facebook.com/events/1626774368410840/" },
+  { t: "R.I.O.T. Collective Launch Party!", l: "https://www.facebook.com/events/2392888871224870/" },
+  { t: "A Day of Giving Event for FUR", l: "https://www.facebook.com/events/1330282532531467/" },
+  { t: "New Moon Breakthrough Breathworkshop with Sound Bath", l: "https://www.facebook.com/events/906309905555532/" },
+  { t: "Let's Meditate", l: "https://www.facebook.com/events/1492608159258844/" },
+  { t: "Community Vendor Event / Spring Fling at the Army", l: "https://www.facebook.com/events/1596754648224147/" },
+  { t: "Shindig at the Shed 5", l: "https://www.facebook.com/events/1578090069951243/" },
+  { t: "Showdown In The Valley 2026", l: "https://www.facebook.com/events/1772984020061637/" },
+  { t: "CreepyCon 2026 — 10 Year Anniversary Bash!", l: "https://www.facebook.com/events/1315633967284958/" },
+  { t: "Family Event: Edible Soil Layers at the Bloomingdale Branch Library", l: "https://www.facebook.com/events/1495204618969582/" },
+  { t: "My Family Heirloom Identification Event", l: "https://www.facebook.com/events/1314195153414552/" },
+  { t: "Bark & Bolt 5k + Bark in the Park Dog Fair", l: "https://www.facebook.com/events/1878362173073874/" },
+  { t: "Streetside Classics — Charlotte Spring Car Show 2026", l: "https://www.facebook.com/events/1209555697426366/" },
+  { t: "Elizabeth as Taylor — The Taylor Swift Tribute (Live Band!)", l: "https://www.facebook.com/events/2466905840388196/" },
+  { t: "The Dam Craft Fair", l: "https://www.facebook.com/events/913763771546378/" },
+  { t: "Boutiques & Brunch at The Farm, A Gathering Place", l: "https://www.facebook.com/events/1394611352409908/" },
+  { t: "Book Launch: 'The Persephone Project'", l: "https://www.facebook.com/events/1236519278362209/" },
+  { t: "Jug Tavern Festival 2026", l: "https://www.facebook.com/events/845945725186722/" },
+  { t: "Foraging Class", l: "https://www.facebook.com/events/682769518164355/" },
+  { t: "Star Wars Unlimited Monday Tournament!", l: "https://www.facebook.com/events/988517477173521/" },
+  { t: "Samaritan's Purse Trip: Yancey County, NC Rebuild", l: "https://www.facebook.com/events/1639962127211769/" },
+  { t: "Reasonably Priced Babies: The Spring Zing Show at Revival", l: "https://www.facebook.com/events/958762413713847/" },
+  { t: "Moonshine Valley F-100's", l: "https://www.facebook.com/events/4275671229361216/" },
+];
+
 const FILTERS = [
   { label: "All", key: "all", emoji: "✨" },
   { label: "Free", key: "free", emoji: "🆓" },
   { label: "Kids", key: "kids", emoji: "👶" },
   { label: "Food", key: "food", emoji: "🌽" },
-  { label: "Bilingual", key: "bilingual", emoji: "🇪🇸" },
-  { label: "Sensory", key: "sensory", emoji: "🌈" },
+  { label: "Arts", key: "arts", emoji: "🎨" },
+  { label: "Wellness", key: "wellness", emoji: "🧘" },
 ];
 
 const linkStyle = "underline decoration-dotted underline-offset-2 hover:decoration-solid";
@@ -71,21 +272,130 @@ function LinkOut({ href, children }) {
 
 function getEventEmoji(text) {
   const low = text.toLowerCase();
-  if (low.includes("manna") || (low.includes("market") && !low.includes("ymca"))) return "🌽";
+  if (low.includes("manna") || (low.includes("market") && !low.includes("ymca") && !low.includes("dark market"))) return "🌽";
   if (low.includes("ymca")) return "🥗";
   if (low.includes("ywam") || low.includes("food truck")) return "🚚";
   if (low.includes("feast") || low.includes("feed the people") || low.includes("dinner") || low.includes("12 baskets")) return "🍽️";
   if (low.includes("bounty")) return "🥬";
   if (low.includes("dental") || low.includes("smiles")) return "🦷";
-  if (low.includes("yoga") || low.includes("pound") || low.includes("stretching") || low.includes("dance") || low.includes("mindfulness") || low.includes("fitness")) return "🧘";
+  if (low.includes("yoga") || low.includes("pound") || low.includes("stretching") || low.includes("mindfulness") || low.includes("meditation") || low.includes("breathwork") || low.includes("sound bath") || low.includes("himalayan")) return "🧘";
   if (low.includes("museum") || low.includes("amos")) return "🦖";
-  if (low.includes("movie") || low.includes("video game")) return "🍿";
-  if (low.includes("art") || low.includes("craft") || low.includes("munch") || low.includes("flower")) return "🎨";
+  if (low.includes("movie") || low.includes("video game") || low.includes("cinema")) return "🍿";
+  if (low.includes("renaissance") || low.includes("faire")) return "⚔️";
+  if (low.includes("art") || low.includes("craft") || low.includes("munch") || low.includes("flower") || low.includes("antique") || low.includes("vintage") || low.includes("boutique")) return "🎨";
   if (low.includes("arms around") || low.includes("autism") || low.includes("support group") || low.includes("pet therapy")) return "💜";
-  if (low.includes("plant") || low.includes("herbal")) return "🪴";
+  if (low.includes("plant") || low.includes("herbal") || low.includes("foraging") || low.includes("rhododendron") || low.includes("lavender")) return "🌸";
   if (low.includes("tax")) return "📝";
-  if (low.includes("library") || low.includes("storytime")) return "📚";
+  if (low.includes("library") || low.includes("storytime") || low.includes("book")) return "📚";
+  if (low.includes("concert") || low.includes("choir") || low.includes("bangas") || low.includes("tasjan") || low.includes("deslondes") || low.includes("karen peck") || low.includes("nerd nite")) return "🎵";
+  if (low.includes("band") && !low.includes("comedy band")) return "🎵";
+  if (low.includes("comedy") || low.includes("josh johnson")) return "😂";
+  if (low.includes("drag") || low.includes("pride") || low.includes("anthem") || low.includes("bingo") || low.includes("lgbtq")) return "🌈";
+  if (low.includes("wizard") || low.includes("othello") || low.includes("theater") || low.includes("theatre")) return "🎭";
+  if (low.includes("honeyfest") || low.includes("pickle")) return "🍯";
+  if (low.includes("beer") || low.includes("brewing") || low.includes("brew") || low.includes("sip")) return "🍺";
+  if (low.includes("yard sale") || low.includes("consignment") || low.includes("crafty") || low.includes("craft fair") || low.includes("dam craft")) return "🛍️";
+  if (low.includes("council") || low.includes("commission") || low.includes("board") || low.includes("committee") || low.includes("zoning") || low.includes("civil service") || low.includes("recovery board") || low.includes("infrastructure")) return "🏛️";
+  if (low.includes("grind") || low.includes("entrepreneurship") || low.includes("black business")) return "✊";
+  if (low.includes("princess")) return "👑";
+  if (low.includes("dark market") || low.includes("horror") || low.includes("creepy") || low.includes("halloween")) return "🕷️";
+  if (low.includes("dog") || low.includes("pet") || low.includes("animal") || low.includes("adoption") || low.includes("fur")) return "🐾";
+  if (low.includes("car show") || low.includes("f-100")) return "🚗";
+  if (low.includes("taylor swift")) return "🎸";
+  if (low.includes("samaritan") || low.includes("rebuild")) return "🔨";
+  if (low.includes("tarot")) return "🔮";
+  if (low.includes("dance")) return "💃";
+  if (low.includes("vendor") || low.includes("festival") || low.includes("fest")) return "🎪";
+  if (low.includes("food festival") || low.includes("turkish food") || low.includes("honey") || low.includes("eats")) return "🍽️";
+  if (low.includes("5k") || low.includes("run") || low.includes("spartan")) return "🏃";
+  if (low.includes("recovery coach") || low.includes("community association") || low.includes("shiloh")) return "🤝";
+  if (low.includes("connect beyond")) return "🌀";
   return "✨";
+}
+
+// ── Events Tab ────────────────────────────────────────────────────────────────
+function EventsTab({ activeFilter }) {
+  const today = new Date();
+  const todayMonth = today.getMonth() + 1;
+  const todayDay = today.getDate();
+
+  const isPast = (dateStr) => {
+    const parts = dateStr.split(" ");
+    const months = { Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12 };
+    const m = months[parts[0]];
+    const d = parseInt(parts[1]);
+    if (!m || isNaN(d)) return false;
+    return m < todayMonth || (m === todayMonth && d < todayDay);
+  };
+
+  const filterFn = (item) => {
+    if (activeFilter === "all") return true;
+    const low = item.t.toLowerCase();
+    if (activeFilter === "free") return low.includes("free") || low.includes("grind") || low.includes("donation") || low.includes("rhododendron");
+    if (activeFilter === "food") return low.includes("honey") || low.includes("pickle") || low.includes("food") || low.includes("sip") || low.includes("beer") || low.includes("brew") || low.includes("fab fest") || low.includes("eats") || low.includes("turkish");
+    if (activeFilter === "kids") return low.includes("princess") || low.includes("wizard") || low.includes("crafty") || low.includes("family") || low.includes("bark") || low.includes("movie") || low.includes("edible soil");
+    if (activeFilter === "arts") return low.includes("art") || low.includes("craft") || low.includes("antique") || low.includes("vintage") || low.includes("market") || low.includes("consignment") || low.includes("pottery") || low.includes("renaissance") || low.includes("faire") || low.includes("boutique");
+    if (activeFilter === "wellness") return low.includes("meditation") || low.includes("yoga") || low.includes("breathwork") || low.includes("sound") || low.includes("himalayan") || low.includes("mindful") || low.includes("meditate");
+    return true;
+  };
+
+  const upcomingDays = UPCOMING_EVENTS
+    .filter(ev => !isPast(ev.d))
+    .map(ev => ({ ...ev, items: ev.items.filter(filterFn) }))
+    .filter(ev => ev.items.length > 0);
+
+  const filteredExplore = EXPLORE_MORE.filter(filterFn);
+
+  return (
+    <div>
+      <div className="bg-gradient-to-br from-violet-50 to-fuchsia-50 rounded-2xl p-5 mb-4 border border-violet-200">
+        <p className="text-base font-medium text-gray-800">Upcoming events in Asheville and WNC. Always confirm with venue before attending! 📅</p>
+      </div>
+
+      {upcomingDays.length === 0 && (
+        <p className="text-sm text-gray-500 text-center py-8">No upcoming events match this filter.</p>
+      )}
+
+      {upcomingDays.map((ev, i) => (
+        <div key={i} className="mb-4 bg-white p-4 rounded-xl shadow-sm">
+          <h3 className="font-black text-sm bg-violet-100 text-violet-800 rounded-lg px-3 py-1.5 inline-block mb-3">{ev.d}</h3>
+          <div className="space-y-2">
+            {ev.items.map((item, j) => (
+              <div key={j} className="text-sm text-gray-700 leading-relaxed flex gap-2 items-start border-b border-gray-50 pb-2 last:border-0 last:pb-0">
+                <span className="shrink-0 mt-0.5 text-base">{getEventEmoji(item.t)}</span>
+                <span className="flex-1 break-words">
+                  {item.l
+                    ? <a href={item.l} target="_blank" rel="noopener noreferrer" className={`text-[#c06030] ${linkStyle}`}>{item.t} ↗</a>
+                    : item.t}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {filteredExplore.length > 0 && (
+        <div className="mt-8">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">🔍</span>
+            <h2 className="text-lg font-medium text-[#1a2520] tracking-tight" style={{ fontFamily: "var(--font-fraunces)" }}>Explore More (Dates TBD)</h2>
+          </div>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+            {filteredExplore.map((item, i) => (
+              <div key={i} className="flex gap-2 items-start py-2 border-b border-gray-50 last:border-0">
+                <span className="text-base shrink-0 mt-0.5">{getEventEmoji(item.t)}</span>
+                <span className="text-sm flex-1 break-words">
+                  {item.l
+                    ? <a href={item.l} target="_blank" rel="noopener noreferrer" className={`text-[#c06030] ${linkStyle}`}>{item.t} ↗</a>
+                    : item.t}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function FreeFoodTab({ activeFilter }) {
@@ -286,220 +596,11 @@ function NeighborhoodTab() {
   );
 }
 
-function MayEventsTab({ activeFilter }) {
-  const events = [
-    { d: "May 1", items: [
-      { t: "12pm · YWAM Free Food Truck — Aston St & S Lexington Ave", l: "https://ywamasheville.org" },
-      { t: "3pm · May Day Feast at 12 Baskets, 610 Haywood Rd", l: "https://www.ashevillepovertyinitiative.org/" },
-      { t: "3pm · Manna Market – Fairview, 1 Taylor Rd", l: MANNA_URL },
-    ]},
-    { d: "May 2", items: [
-      { t: "11am · Servants of Smiles Free Dental Day — Zoë Dental, 10A Yorkshire St Suite 110", l: "https://www.zoedental.com/" },
-    ]},
-    { d: "May 4", items: [
-      { t: "Manna Market – Swannanoa, 71 Riverwood Rd", l: MANNA_URL },
-    ]},
-    { d: "May 5", items: [
-      { t: "5pm · YMCA Mobile Market – Mills River, 124 Town Center Dr", l: YMCA_URL },
-      { t: "5:30pm · Manna Market – Topton, 71 Old School Rd", l: MANNA_URL },
-      { t: "4:30pm · Manna Market – Candler, 390 Asbury Rd", l: MANNA_URL },
-    ]},
-    { d: "May 6", items: [
-      { t: "2pm · Manna Market – Bryson City, 60 Almond School Rd", l: MANNA_URL },
-      { t: "3pm · YMCA Mobile Market – Candler, 31 Westridge Market Pl", l: YMCA_URL },
-      { t: "5pm · YMCA Mobile Market – Marshall, 258 Carolina Ln", l: YMCA_URL },
-      { t: "3pm · Manna Market – Asheville, 165 S French Broad Ave", l: MANNA_URL },
-      { t: "5:30pm · Feed The People Free Dinner — Oakwood St & Haywood Rd", l: "https://www.facebook.com/FeedThePeopleAVL/" },
-    ]},
-    { d: "May 7", items: [
-      { t: "3pm · YMCA Mobile Market – Swannanoa, 101 W Charleston Ave", l: YMCA_URL },
-      { t: "5:30pm · Manna Market – Cherokee, 777 Casino Drive", l: MANNA_URL },
-    ]},
-    { d: "May 8", items: [
-      { t: "12pm · Manna Market – Asheville, 36 Grove St", l: MANNA_URL },
-      { t: "4pm · YMCA Mobile Market – Clyde, 15 Facility Dr", l: YMCA_URL },
-      { t: "Movie Night: Hidden Figures — East AVL Library", l: LIB_URL },
-    ]},
-    { d: "May 11", items: [
-      { t: "4pm · Manna Market – Spruce Pine, 53 Pine Grove Rd", l: MANNA_URL },
-      { t: "3pm · Manna Market – Asheville (Lee Walker), 20 Lee Garden Ln", l: MANNA_URL },
-      { t: "5pm · Manna Market – Asheville (Erwin Hills), 20 Erwin Hills Rd", l: MANNA_URL },
-    ]},
-    { d: "May 12", items: [
-      { t: "1pm · Manna Market – Big Ivy Community Center", l: MANNA_URL },
-      { t: "2:30pm · Manna Market – Asheville (Bartlett Arms), 121 Bartlett St", l: MANNA_URL },
-      { t: "Manna Market – Woodfin, 199 Elkwood Ave", l: MANNA_URL },
-    ]},
-    { d: "May 13", items: [
-      { t: "2pm · Manna Market – Burnsville, 71 Newdale Church Rd", l: MANNA_URL },
-      { t: "1pm · Manna Market – Asheville (Pisgah View), 1 Granada St", l: MANNA_URL },
-    ]},
-    { d: "May 14", items: [
-      { t: "3:30pm · Manna Market – Spruce Pine, 431 Oak Ave", l: MANNA_URL },
-      { t: "5pm · YMCA Mobile Market – Marion, 900 Baldwin Ave", l: YMCA_URL },
-      { t: "12:15pm · POUND® Fitness — Arms Around ASD", l: ARMS_URL },
-      { t: "1:30pm · Mindfulness with Andrew — Arms Around ASD", l: ARMS_URL },
-      { t: "2pm · Gentle Stretching with Ellen — Arms Around ASD", l: ARMS_URL },
-    ]},
-    { d: "May 15", items: [
-      { t: "4pm · YMCA Mobile Market – Asheville, 10 Coleys Circle", l: YMCA_URL },
-      { t: "11:30am · Davis's Dance Party — Arms Around ASD", l: ARMS_URL },
-      { t: "12:30pm · Late-Identified Women's Support Group — Arms Around ASD", l: ARMS_URL },
-      { t: "1pm · Pet Therapy with Deputy Brody — Arms Around ASD", l: ARMS_URL },
-      { t: "2pm · Art with Jenna O — Arms Around ASD", l: ARMS_URL },
-      { t: "4pm · Video Games with Lili — Arms Around ASD", l: ARMS_URL },
-      { t: "5:30pm · Friday Night at the Movies — Arms Around ASD", l: ARMS_URL },
-    ]},
-    { d: "May 16", items: [
-      { t: "2pm · Free Herbal Plant Starts — BeLoved Asheville, 133 Livingston St", l: "https://www.belovedasheville.com/" },
-    ]},
-    { d: "May 18", items: [
-      { t: "Homeschool Takeover: National Museum Day — AMOS", l: "https://ashevillemuseum.org/" },
-      { t: "3pm · Manna Market – Asheville (Deaverview), 275 Deaverview Rd", l: MANNA_URL },
-      { t: "Manna Market – Asheville, 1984 Hendersonville Rd", l: MANNA_URL },
-    ]},
-    { d: "May 19", items: [
-      { t: "1pm · Manna Market – Big Ivy Community Center", l: MANNA_URL },
-      { t: "5pm · YMCA Mobile Market – Mills River, 124 Town Center Dr", l: YMCA_URL },
-    ]},
-    { d: "May 20", items: [
-      { t: "3:30pm · Manna Market – Murphy, 7829 NC-294", l: MANNA_URL },
-      { t: "5pm · YMCA Mobile Market – Marshall, 258 Carolina Ln", l: YMCA_URL },
-      { t: "3pm · Manna Market – Asheville (Shiloh), 486 Caribou Rd", l: MANNA_URL },
-    ]},
-    { d: "May 21", items: [
-      { t: "3pm · YMCA Mobile Market – Asheville, 150 Tunnel Rd", l: YMCA_URL },
-      { t: "6pm · YMCA Mobile Market – Asheville, 40 N Merrimon Ave", l: YMCA_URL },
-      { t: "3:30pm · Manna Market – Cherokee, 27 Long Branch Rd", l: MANNA_URL },
-      { t: "2:30pm · Manna Market – Asheville (Klondyke), 500 Montford Ave", l: MANNA_URL },
-    ]},
-    { d: "May 22", items: [
-      { t: "4pm · YMCA Mobile Market – Clyde, 15 Facility Dr", l: YMCA_URL },
-      { t: "2pm · Manna Market – Candler (ABCCM-West), 1914 Smokey Park Hwy", l: MANNA_URL },
-    ]},
-    { d: "May 25", items: [
-      { t: "5:30pm · Manna Market – Franklin, 1436 Georgia Rd", l: MANNA_URL },
-      { t: "3pm · Manna Market – Asheville (Grant Center), 133 Livingston St", l: MANNA_URL },
-    ]},
-    { d: "May 26", items: [
-      { t: "5pm · YMCA Mobile Market – Hendersonville, 8106 Ave W", l: YMCA_URL },
-      { t: "1pm · Manna Market – Big Ivy Community Center", l: MANNA_URL },
-      { t: "2:30pm · Manna Market – Asheville (Bartlett Arms), 121 Bartlett St", l: MANNA_URL },
-    ]},
-    { d: "May 27", items: [
-      { t: "3pm · YMCA Mobile Market – Candler, 31 Westridge Market Pl", l: YMCA_URL },
-      { t: "5pm · YMCA Mobile Market – Leicester, 1561 Alexander Rd", l: YMCA_URL },
-      { t: "Manna Market – Asheville (Fernihurst), 71 Fernihurst Dr", l: MANNA_URL },
-      { t: "1pm · Manna Market – Asheville (Pisgah View), 1 Granada St", l: MANNA_URL },
-    ]},
-    { d: "May 28", items: [
-      { t: "2:30pm · YMCA Mobile Market – Old Fort, 909 E Main St", l: YMCA_URL },
-      { t: "Manna Market – Marion, 201 Ridley St", l: MANNA_URL },
-      { t: "Make & Munch: Paper Flowers + snacks — East AVL Library", l: LIB_URL },
-    ]},
-  ];
-
-  const today = new Date();
-  const todayMonth = today.getMonth() + 1;
-  const todayDay = today.getDate();
-
-  const isPast = (dateStr) => {
-    const [monthName, dayStr] = dateStr.split(" ");
-    const months = { Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12 };
-    const m = months[monthName];
-    const d = parseInt(dayStr);
-    return m < todayMonth || (m === todayMonth && d < todayDay);
-  };
-
-  const filterFn = (item) => {
-    if (activeFilter === "all") return true;
-    const low = item.t.toLowerCase();
-    if (activeFilter === "free") return true;
-    if (activeFilter === "food") return low.includes("market") || low.includes("manna") || low.includes("ymca") || low.includes("feast") || low.includes("feed") || low.includes("ywam") || low.includes("munch");
-    if (activeFilter === "kids") return low.includes("kid") || low.includes("baby") || low.includes("tot") || low.includes("youth") || low.includes("children") || low.includes("homeschool") || low.includes("dance party") || low.includes("art with") || low.includes("video game");
-    if (activeFilter === "bilingual") return low.includes("spanish") || low.includes("bilingual") || low.includes("cuento");
-    if (activeFilter === "sensory") return low.includes("arms around") || low.includes("autism") || low.includes("sensory") || low.includes("quiet") || low.includes("support group") || low.includes("pet therapy") || low.includes("mindfulness");
-    return true;
-  };
-
-  const [showRecurring, setShowRecurring] = useState(false);
-  const daysInMay = Array.from({length: 31}, (_, i) => i + 1);
-
-  const getDayOfWeek = (dayNum) => new Date(2026, 4, dayNum).toLocaleDateString('en-US', { weekday: 'long' });
-
-  const allFilteredDays = daysInMay.map(dayNum => {
-    const dStr = `May ${dayNum}`;
-    if (isPast(dStr)) return null;
-
-    const dayOfWeek = getDayOfWeek(dayNum);
-
-    const specificEventObj = events.find(e => e.d === dStr);
-    let dayEvents = specificEventObj ? [...specificEventObj.items] : [];
-
-    if (showRecurring) {
-      const foodObj = WEEKLY_FOOD.find(w => w.day === dayOfWeek);
-      if (foodObj) {
-        dayEvents = dayEvents.concat(foodObj.items.map(i => ({ t: `${i.t} · ${i.n} @ ${i.l}`, l: i.link || "" })));
-      }
-      const libObj = WEEKLY_LIBRARY.find(w => w.fullDay === dayOfWeek);
-      if (libObj) {
-        dayEvents = dayEvents.concat(libObj.items.map(i => ({ t: `${i.n} (${i.t}) @ ${i.l}`, l: LIB_URL })));
-      }
-      if (dayOfWeek === "Friday") {
-        dayEvents.push({ t: "12pm · YWAM Free Food Truck — Aston St & S Lexington Ave", l: "https://ywamasheville.org" });
-      }
-    }
-
-    dayEvents = dayEvents.filter(filterFn);
-
-    if (dayEvents.length === 0) return null;
-    return { d: dStr, items: dayEvents };
-  }).filter(Boolean);
-
-  return (
-    <div>
-      <div className="bg-gradient-to-br from-violet-50 to-fuchsia-50 rounded-2xl p-5 mb-4 border border-violet-200">
-        <p className="text-base font-medium text-gray-800">Special one-time and seasonal events for May 2026. Always confirm with venue before attending! 📅</p>
-      </div>
-
-      <label className="flex items-center gap-2.5 bg-white px-4 py-3 rounded-xl shadow-sm border border-violet-100 mb-6 cursor-pointer select-none active:bg-gray-50 transition-colors">
-        <input
-          type="checkbox"
-          checked={showRecurring}
-          onChange={(e) => setShowRecurring(e.target.checked)}
-          className="w-5 h-5 rounded border-violet-300 text-violet-600 focus:ring-violet-500 shrink-0"
-        />
-        <span className="text-sm font-bold text-gray-800 leading-tight">Include weekly recurring events (food, storytimes)</span>
-      </label>
-
-      {allFilteredDays.map((ev, i) => (
-        <div key={i} className="mb-4 bg-white p-4 rounded-xl shadow-sm">
-          <h3 className="font-black text-sm bg-violet-100 text-violet-800 rounded-lg px-3 py-1.5 inline-block mb-3">{ev.d}</h3>
-          <div className="space-y-2">
-            {ev.items.map((item, j) => (
-              <div key={j} className="text-sm text-gray-700 leading-relaxed flex gap-2 items-start border-b border-gray-50 pb-2 last:border-0 last:pb-0">
-                <span className="shrink-0 mt-0.5 text-base">{getEventEmoji(item.t)}</span>
-                <span className="flex-1 break-words">
-                  {item.l
-                    ? <a href={item.l} target="_blank" rel="noopener noreferrer" className={`text-[#c06030] ${linkStyle}`}>{item.t} ↗</a>
-                    : item.t}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-
-
 export default function App() {
   const [tab, setTab] = useState(0);
   const [activeFilter, setActiveFilter] = useState("all");
 
-  const tabs = [MayEventsTab, FreeFoodTab, KidsTab, NeighborhoodTab];
+  const tabs = [EventsTab, FreeFoodTab, KidsTab, NeighborhoodTab];
   const ActiveTab = tabs[tab];
 
   return (
@@ -515,9 +616,9 @@ export default function App() {
             <img src="/logo.svg" alt="ConnectEd Circles" className="w-8 h-8 object-contain shrink-0" />
             <div>
               <h1 className="text-[17px] font-medium tracking-tight text-[#1a2520] leading-tight" style={{ fontFamily: "var(--font-fraunces)" }}>
-                May Family Happenings
+                Asheville & WNC Events
               </h1>
-              <p className="text-[10px] font-semibold text-[#5d8a72] tracking-wide uppercase">ConnectEd Circles · May 2026</p>
+              <p className="text-[10px] font-semibold text-[#5d8a72] tracking-wide uppercase">ConnectEd Circles · 2026</p>
             </div>
           </div>
         </div>
@@ -541,7 +642,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Filter Chips — only shown on May Events tab */}
+        {/* Filter Chips — only shown on Events tab */}
         {tab === 0 && (
           <div className="max-w-md mx-auto px-3 pb-3">
             <div className="flex gap-1.5 overflow-x-auto hide-scrollbar">
